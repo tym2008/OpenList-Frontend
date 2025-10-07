@@ -6,7 +6,7 @@
   "save": "保存",
   "update": "更新",
   "copied": "已复制",
-  "delete_success": "删除成功!",
+  "delete_success": "删除成功",
   "save_success": "保存成功",
   "update_success": "更新成功",
   "choose": "选择",
@@ -28,5 +28,6 @@
   "close": "关闭",
   "no_support_now": "暂不支持",
   "empty_input": "请输入",
-  "name": "名称"
+  "name": "名称",
+  "go_to_storages": "转到存储"
 }
