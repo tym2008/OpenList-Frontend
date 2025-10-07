@@ -17,6 +17,254 @@
       type="image/ico"
       href="https://res.oplist.org/logo/logo.svg"
     />
+
+    <style>
+      /* 图片API用法点进去都会有食用说明的
+        樱花：https://www.dmoe.cc
+        夏沫：https://cdn.seovx.com
+        搏天：https://api.btstu.cn/doc/sjbz.php
+        姬长信：https://github.com/insoxin/API
+        保罗：https://api.paugram.com
+        岁月小筑：https://img.xjh.me
+        东方Project：https://img.paulzzh.com
+        https://www.loliapi.com/acg/
+        https://hefollo.com/apis.php?type=电脑端-动漫图片
+        https://t.alcy.cc/moe
+        https://3650000.xyz/
+        https://pic.re/images
+        https://t.alcy.cc/ys
+        https://eopageapi.2x.nz/pic?img=h
+    */
+
+      /*白天背景图*/
+      .hope-ui-light {
+        background-image: url("https://t.alcy.cc/ys") !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position-x: center;
+        backdrop-filter: blur(3px);
+      }
+      /*夜间背景图*/
+      .hope-ui-dark {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://www.loliapi.com/acg/") !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position-x: center;
+      }
+      /*主列表白天模式透明*/
+      .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-igScBhH-css {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+      }
+      /*主列表夜间模式透明*/
+      .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-iigjoxS-css {
+        background-color: rgb(0 0 0 / 50%) !important;
+      }
+
+      /*readme白天模式透明*/
+      .hope-c-PJLV.hope-c-PJLV-ikSuVsl-css {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+      }
+      /*readme夜间模式透明*/
+      .hope-c-PJLV.hope-c-PJLV-iiuDLME-css {
+        background-color: rgb(0 0 0 / 50%) !important;
+      }
+
+      /*顶部右上角切换按钮透明*/
+      .hope-ui-light .hope-c-ivMHWx-hZistB-cv.hope-icon-button {
+        background-color: rgba(255, 255, 255, 0.3) !important;
+      }
+      .hope-ui-dark .hope-c-ivMHWx-hZistB-cv.hope-icon-button {
+        background-color: rgb(0 0 0 / 10%) !important;
+      }
+
+      /*右下角侧边栏按钮透明 第一个是白天 第二个是夜间*/
+      .hope-ui-light .hope-c-PJLV-ijgzmFG-css {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+      }
+      .hope-ui-dark .hope-c-PJLV-ijgzmFG-css {
+        background-color: rgb(0 0 0 / 50%) !important;
+      }
+
+      /*白天模式代码块透明*/
+      .hope-ui-light pre {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+      }
+      /*夜间模式代码块透明*/
+      .hope-ui-dark pre {
+        background-color: rgba(255, 255, 255, 0) !important;
+      }
+      /*左侧侧边栏目录*/
+      /*白天模式*/
+      .hope-ui-light .hope-c-PJLV-ieGWMbI-css {
+        background: rgba(255, 255, 255, 0.3) !important;
+      }
+      /*夜间模式*/
+      .hope-ui-dark .hope-c-PJLV-ieGWMbI-css {
+        background-color: rgb(0 0 0 / 50%) !important;
+      }
+      /* 返回顶部 */
+      .hope-c-PJLV-ihVEsOa-css {
+        background: rgba(255, 255, 255, 0.3) !important;
+      }
+      .hope-ui-dark .hope-c-PJLV-ihVEsOa-css {
+        background-color: rgb(0 0 0 / 50%) !important;
+      }
+
+      /*正常情况未使用吸附功能*/
+      /*导航条*/
+      /*白天模式*/
+      .hope-ui-light .hope-c-PJLV-idaeksS-css {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        border-radius: 10px !important;
+      }
+      /*夜间模式*/
+      .hope-ui-dark .hope-c-PJLV-idaeksS-css {
+        background-color: rgb(0 0 0 / 50%) !important;
+        border-radius: 10px !important;
+      }
+      /*顶栏*/
+      .hope-c-PJLV-ikaMhsQ-css {
+        background: rgba(255, 255, 255, 0) !important;
+      }
+
+      /*白天模式 搜索主体+毛玻璃*/
+      .hope-ui-light .hope-c-PJLV-iiBaxsN-css {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(10px) !important;
+      }
+
+      /*白天模式 搜索栏输入框+毛玻璃*/
+      .hope-ui-light .hope-c-kvTTWD-hYRNAb-variant-filled {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(10px) !important;
+      }
+
+      /*白天模式 搜索按钮+毛玻璃*/
+      .hope-ui-light .hope-c-PJLV-ikEIIxw-css {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(10px) !important;
+        padding: var(--hope-space-1) !important;
+      }
+
+      /*夜间模式搜索主体+毛玻璃*/
+      .hope-ui-dark .hope-c-PJLV-iiBaxsN-css {
+        background-color: rgb(0 0 0 / 10%) !important;
+        backdrop-filter: blur(10px) !important;
+      }
+
+      /*夜间模式搜索栏+毛玻璃*/
+      .hope-ui-dark .hope-c-kvTTWD-hYRNAb-variant-filled {
+        background-color: rgb(0 0 0 / 10%) !important;
+        backdrop-filter: blur(10px) !important;
+      }
+
+      /*夜间模式 搜索按钮+毛玻璃*/
+      .hope-ui-dark .hope-c-PJLV-ikEIIxw-css {
+        background-color: rgb(0 0 0 / 10%) !important;
+        backdrop-filter: blur(10px) !important;
+        padding: var(--hope-space-1) !important;
+      }
+
+      /* 吸附到页面顶部 */
+      /*顶部*/
+      .hope-c-PJLV-icWrYmg-css {
+        background: rgba(255, 255, 255, 0) !important;
+      }
+      /*导航条*/
+      .hope-c-PJLV-icKsjdm-css::after {
+        background: rgba(255, 255, 255, 0) !important;
+      }
+      /*白天模式*/
+      .hope-ui-light .hope-c-PJLV-icKsjdm-css {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        border-radius: 10px !important;
+      }
+      /*夜间模式*/
+      .hope-ui-dark .hope-c-PJLV-icKsjdm-css {
+        background-color: rgb(0 0 0 / 50%) !important;
+        border-radius: 10px !important;
+      }
+
+      /*仅吸附导航栏*/
+      /*导航条*/
+      .hope-c-PJLV-ifdXShc-css::after {
+        background: rgba(255, 255, 255, 0) !important;
+      }
+      /*白天模式*/
+      .hope-ui-light .hope-c-hrsMRY {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        border-radius: 10px !important;
+      }
+      /*夜间模式*/
+      .hope-ui-dark .hope-c-hrsMRY {
+        background-color: rgb(0 0 0 / 50%) !important;
+        border-radius: 10px !important;
+      }
+
+      /*底部CSS，.App .table这三个一起的*/
+      dibu {
+        border-top: 0px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      .App {
+        min-height: 85vh;
+      }
+      .table {
+        margin: auto;
+      }
+
+      /*去掉底部*/
+      .footer {
+        display: none !important;
+      }
+
+      /*全局字体*/
+      * {
+        font-family: LXGW WenKai;
+      }
+      * {
+        font-weight: bold;
+      }
+      body {
+        font-family: LXGW WenKai;
+      }
+
+      /*渐变背景CSS*/
+      #canvas-basic {
+        position: fixed;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -999;
+      }
+
+      /* 隐藏 通知栏的X */
+      .hope-close-button {
+        display: none !important;
+      }
+      /* 隐藏 右下角 */
+      .left-toolbar-box {
+        display: none;
+      }
+
+      /* 文字超长自动换行 */
+      .name-box.name {
+        white-space: unset !important;
+        overflow: unset !important;
+      }
+    </style>
     <title>Loading...</title>
     <script>
       window.OPENLIST_CONFIG = {
@@ -31,6 +279,50 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!--延迟加载-->
+    <!--如果要写自定义内容建议都加到这个延迟加载的范围内-->
+    <div id="customize" style="display: none">
+      <div>
+        <br />
+      </div>
+
+      <!--延迟加载范围到这里结束-->
+    </div>
+    <!--延迟加载配套使用JS-->
+    <script>
+      let interval = setInterval(() => {
+        if (document.querySelector(".footer")) {
+          document.querySelector("#customize").style.display = ""
+          clearInterval(interval)
+        }
+      }, 200)
+    </script>
+
+    <!-- 渐变背景初始化,如果要使用渐变背景把下面的那一行注释去掉即可-->
+    <!-- 下面的几行都是渐变的一套,自定义头部内还有一个关联的自定义CSS -->
+    <!--<canvas id="canvas-basic"></canvas> -->
+    <!--<script async src="https://npm.elemecdn.com/granim@2.0.0/dist/granim.min.js"></script>-->
+    <script>
+      var granimInstance = new Granim({
+        element: "#canvas-basic",
+        direction: "left-right",
+        isPausedWhenNotInView: true,
+        states: {
+          "default-state": {
+            gradients: [
+              ["#a18cd1", "#fbc2eb"],
+              ["#fff1eb", "#ace0f9"],
+              ["#d4fc79", "#96e6a1"],
+              ["#a1c4fd", "#c2e9fb"],
+              ["#a8edea", "#fed6e3"],
+              ["#9890e3", "#b1f4cf"],
+              ["#a1c4fd", "#c2e9fb"],
+              ["#fff1eb", "#ace0f9"],
+            ],
+          },
+        },
+      })
+    </script>
 
     <script src="/src/main.tsx" type="module"></script>
     <!-- customize body -->
