@@ -18,7 +18,122 @@
       type="image/ico"
       href="https://res.oplist.org/logo/logo.svg"
     />
+   
+<script>
+  function addCustomHeaderButtons() {
+    // --- 在这里配置你的按钮 ---
+    const customButtons = [
+      {
+        text: "统计",
+        url: "https://cloud.umami.is/share/aeemeFNV9rFq6STN", 
+      },
+      {
+        text: "状态",
+        url: "https://stats.uptimerobot.com/BxOAxgHqkh", 
+      },
+    ];
+    // --- 配置结束 ---
 
+    // 1. 寻找参考点：从右上角的图标按钮开始
+    const referenceButton = document.querySelector('.hope-c-ivMHWx-hZistB-cv.hope-icon-button');
+
+    // 确保参考点和它的父级都存在
+    if (!referenceButton || !referenceButton.parentElement) {
+      return;
+    }
+    
+    // 这是原生按钮（主题切换等）所在的容器
+    const nativeButtonsContainer = referenceButton.parentElement;
+    
+    // 这才是我们真正需要进行插入操作的父节点！
+    const insertionPoint = nativeButtonsContainer.parentElement;
+
+    // 如果找不到这个真正的父节点，也退出
+    if (!insertionPoint) {
+        return;
+    }
+
+    // 2. 防止重复添加
+    if (document.getElementById('custom-header-buttons-wrapper')) {
+      return;
+    }
+
+    // 3. 创建包裹我们按钮的容器
+    const wrapper = document.createElement('div');
+    wrapper.id = 'custom-header-buttons-wrapper';
+    
+    // 4. 设置容器样式
+    Object.assign(wrapper.style, {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      // 注意：这里不再需要 marginLeft: 'auto'，因为我们插入的位置是正确的，
+      // 页面原有的布局会自然地处理好间距
+    });
+    
+    // 5. 循环创建按钮（这部分逻辑不变）
+    customButtons.forEach(buttonInfo => {
+      const newButton = document.createElement('a');
+      newButton.href = buttonInfo.url;
+      newButton.textContent = buttonInfo.text;
+      newButton.target = "_blank";
+      newButton.rel = "noopener noreferrer";
+      
+      Object.assign(newButton.style, {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '36px',
+        padding: '0 16px',
+        borderRadius: '8px',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        textDecoration: 'none',
+        transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out',
+        border: 'none',
+        cursor: 'pointer',
+        whiteSpace: 'nowrap'
+      });
+      
+      const updateButtonColors = () => {
+          if (document.documentElement.classList.contains('hope-ui-dark')) {
+              newButton.style.backgroundColor = 'transparent';
+              newButton.style.color = 'rgba(255, 255, 255, 0.8)';
+          } else {
+              newButton.style.backgroundColor = 'transparent';
+              newButton.style.color = 'rgba(0, 0, 0, 0.7)';
+          }
+      };
+      updateButtonColors();
+
+      newButton.onmouseover = () => {
+        if (document.documentElement.classList.contains('hope-ui-dark')) {
+          newButton.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+          newButton.style.color = 'rgba(255, 255, 255, 1)';
+        } else {
+          newButton.style.backgroundColor = 'rgba(0, 0, 0, 0.08)';
+           newButton.style.color = 'rgba(0, 0, 0, 1)';
+        }
+      };
+      newButton.onmouseout = updateButtonColors;
+
+      wrapper.appendChild(newButton);
+    });
+    
+    // 6. 核心修正：在正确的父节点上执行插入操作
+    // 将我们的按钮容器(wrapper)，插入到原生按钮容器(nativeButtonsContainer)的前面
+    insertionPoint.insertBefore(wrapper, nativeButtonsContainer);
+  }
+
+  // 轮询检查机制保持不变
+  const checkInterval = setInterval(() => {
+    // 确保参考按钮已加载，这样我们就能找到正确的插入点
+    if (document.querySelector('.hope-c-ivMHWx-hZistB-cv.hope-icon-button')) {
+      addCustomHeaderButtons();
+      clearInterval(checkInterval);
+    }
+  }, 150);
+</script>
     <style>
       /* 图片API用法点进去都会有食用说明的
         樱花：https://www.dmoe.cc
