@@ -34,42 +34,24 @@
     ];
     // --- 配置结束 ---
 
-    // 1. 寻找参考点：从右上角的图标按钮开始
     const referenceButton = document.querySelector('.hope-c-ivMHWx-hZistB-cv.hope-icon-button');
-
-    // 确保参考点和它的父级都存在
-    if (!referenceButton || !referenceButton.parentElement) {
-      return;
-    }
+    if (!referenceButton || !referenceButton.parentElement) return;
     
-    // 这是原生按钮（主题切换等）所在的容器
     const nativeButtonsContainer = referenceButton.parentElement;
-    
-    // 这才是我们真正需要进行插入操作的父节点！
     const insertionPoint = nativeButtonsContainer.parentElement;
+    if (!insertionPoint) return;
 
-    // 如果找不到这个真正的父节点，也退出
-    if (!insertionPoint) {
-        return;
-    }
+    if (document.getElementById('custom-header-buttons-wrapper')) return;
 
-    // 2. 防止重复添加
-    if (document.getElementById('custom-header-buttons-wrapper')) {
-      return;
-    }
-
-    // 3. 创建包裹我们按钮的容器
     const wrapper = document.createElement('div');
     wrapper.id = 'custom-header-buttons-wrapper';
     
-    // 4. 设置容器样式
     Object.assign(wrapper.style, {
       display: 'flex',
       alignItems: 'center',
       gap: '12px',
     });
     
-    // 5. 循环创建按钮
     customButtons.forEach(buttonInfo => {
       const newButton = document.createElement('a');
       newButton.href = buttonInfo.url;
@@ -94,35 +76,25 @@
       });
       
       const updateButtonColors = () => {
-          if (document.documentElement.classList.contains('hope-ui-dark')) {
-              newButton.style.backgroundColor = 'transparent';
-              newButton.style.color = 'rgba(255, 255, 255, 0.8)';
-          } else {
-              newButton.style.backgroundColor = 'transparent';
-              newButton.style.color = 'rgba(0, 0, 0, 0.7)';
-          }
+          const isDark = document.documentElement.classList.contains('hope-ui-dark');
+          newButton.style.backgroundColor = 'transparent';
+          newButton.style.color = isDark ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)';
       };
       updateButtonColors();
 
       newButton.onmouseover = () => {
-        if (document.documentElement.classList.contains('hope-ui-dark')) {
-          newButton.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-          newButton.style.color = 'rgba(255, 255, 255, 1)';
-        } else {
-          newButton.style.backgroundColor = 'rgba(0, 0, 0, 0.08)';
-           newButton.style.color = 'rgba(0, 0, 0, 1)';
-        }
+        const isDark = document.documentElement.classList.contains('hope-ui-dark');
+        newButton.style.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)';
+        newButton.style.color = isDark ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 1)';
       };
       newButton.onmouseout = updateButtonColors;
 
       wrapper.appendChild(newButton);
     });
     
-    // 6. 核心修正：在正确的父节点上执行插入操作
     insertionPoint.insertBefore(wrapper, nativeButtonsContainer);
   }
 
-  // 轮询检查机制保持不变
   const checkInterval = setInterval(() => {
     if (document.querySelector('.hope-c-ivMHWx-hZistB-cv.hope-icon-button')) {
       addCustomHeaderButtons();
@@ -286,26 +258,9 @@
         background-color: rgb(0 0 0 / 50%) !important;
         border-radius: 10px !important;
       }
-      /*底部CSS，.App .table这三个一起的*/
-      dibu {
-        border-top: 0px;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        margin: 0px;
-        padding: 0px;
-      }
-      .App {
-        min-height: 85vh;
-      }
-      .table {
-        margin: auto;
-      }
       /*全局字体*/
       * {
         font-family: LXGW WenKai;
-      }
-      * {
         font-weight: bold;
       }
       body {
@@ -317,80 +272,46 @@
         display: block;
         width: 100%;
         height: 100%;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+        top: 0; right: 0; bottom: 0; left: 0;
         z-index: -999;
       }
       /* 隐藏 通知栏的X */
-      .hope-close-button {
-        display: none !important;
-      }
+      .hope-close-button { display: none !important; }
       /* 隐藏 右下角 */
-      .left-toolbar-box {
-        display: none;
-      }
+      .left-toolbar-box { display: none; }
       /* 文字超长自动换行 */
-      .name-box.name {
-        white-space: unset !important;
-        overflow: unset !important;
-      }
+      .name-box.name { white-space: unset !important; overflow: unset !important; }
 
-      /* --- 新增的底部数据中心信息样式 --- */
-      .footer-datacenter-info {
-        position: fixed; /* 固定在页面底部 */
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 10px 0; /* 底部留白 */
-        text-align: center;
-        font-size: 12px;
-        z-index: 1000; /* 确保在其他内容之上 */
-        transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
-        box-sizing: border-box; /* 包含padding和border在宽度内 */
-      }
-      
-      /* 浅色模式模糊背景 */
-      .hope-ui-light .footer-datacenter-info {
-        background-color: rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(6px);
-        color: rgba(0, 0, 0, 0.7);
-      }
-    
-      /* 深色模式模糊背景 */
-      .hope-ui-dark .footer-datacenter-info {
-        background-color: rgba(0, 0, 0, 0.45);
-        backdrop-filter: blur(6px);
-        color: rgba(255, 255, 255, 0.8);
-      }
-
-      .badges-flex-container {
+      /* --- 数据中心徽章容器样式 --- */
+      .custom-footer-badges {
         display: flex;
-        justify-content: center; /* 居中显示 */
+        justify-content: center;
         align-items: center;
-        gap: 10px; /* 徽章之间的间距 */
-        padding: 5px 10px; /* 左右内边距 */
-        flex-wrap: wrap; /* 当空间不足时换行 */
+        flex-wrap: wrap; /* 允许换行 */
+        gap: 10px; /* 徽章间距 */
+        padding: 20px 15px;
+        margin: 20px auto; /* 上下边距和水平居中 */
+        max-width: 90%;
+        width: fit-content; /* 宽度自适应内容 */
+        min-width: 300px;
+        border-radius: 12px;
+        transition: background-color 0.3s ease;
       }
-      
-      .datacenter-badge {
-        display: flex; /* 使用flex来排列徽章内部的文字 */
-        align-items: center; /* 垂直居中文本 */
+      /* 浅色模式模糊背景 */
+      .hope-ui-light .custom-footer-badges {
+        background-color: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(5px);
       }
-      
-      .datacenter-badge svg {
-        vertical-align: middle; /* 确保SVG与文本基线对齐 */
+      /* 深色模式模糊背景 */
+      .hope-ui-dark .custom-footer-badges {
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
       }
     </style>
-    
     <title>Loading...</title>
     <script>
       window.OPENLIST_CONFIG = {
-        cdn: undefined,
-        base_path: undefined,
-        api: undefined,
-        main_color: undefined,
+        cdn: undefined, base_path: undefined, api: undefined, main_color: undefined,
       }
       window.__dynamic_base__ = window.OPENLIST_CONFIG.cdn || ""
     </script>
@@ -398,22 +319,20 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--延迟加载-->
-    <div id="customize" style="display: none">
-      <div><br /></div>
-    </div>
-    <!--延迟加载配套使用JS-->
-    <script>
-      let interval = setInterval(() => {
-        if (document.querySelector(".footer")) {
-          document.querySelector("#customize").style.display = ""
-          clearInterval(interval)
-        }
-      }, 200)
-    </script>
 
-    <!-- 渐变背景初始化 -->
-    <!--<canvas id="canvas-basic"></canvas> -->
+    <!-- 延迟加载的自定义内容 (可选) -->
+    <div id="customize" style="display: none"></div>
+    <script>
+      let custInterval = setInterval(() => {
+        if (document.querySelector(".footer")) {
+          document.querySelector("#customize").style.display = "";
+          clearInterval(custInterval);
+        }
+      }, 200);
+    </script>
+    
+    <!-- 渐变背景初始化 (可选) -->
+    <!--<canvas id="canvas-basic"></canvas>-->
     <!--<script async src="https://npm.elemecdn.com/granim@2.0.0/dist/granim.min.js"></script>-->
     <script>
       var granimInstance = new Granim({
@@ -425,20 +344,18 @@
             gradients: [
               ["#a18cd1", "#fbc2eb"], ["#fff1eb", "#ace0f9"],
               ["#d4fc79", "#96e6a1"], ["#a1c4fd", "#c2e9fb"],
-              ["#a8edea", "#fed6e3"], ["#9890e3", "#b1f4cf"],
             ],
           },
         },
-      })
+      });
     </script>
 
     <script src="/src/main.tsx" type="module"></script>
-    <!-- customize body -->
-
-    <!-- START: 为数据中心信息添加的代码 -->
+    
+    <!-- START: 数据中心徽章注入脚本 -->
     <script>
       (function() {
-        // --- SVG徽章生成器 ---
+        // --- SVG徽章生成器 (根据文本内容动态计算宽度) ---
         const getTextWidth = (text, font = "bold 11px Verdana,Geneva,DejaVu Sans,sans-serif") => {
             const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
             const context = canvas.getContext("2d");
@@ -447,13 +364,12 @@
         };
 
         const createBadgeSVG = (label, value, valueColor = '#4c1') => {
-            const labelColor = '#555'; // 左侧标签颜色
-            const paddingX = 10; // 左右内边距
+            const labelColor = '#555';
+            const paddingX = 10;
             const labelWidth = Math.round(getTextWidth(label)) + paddingX;
             const valueWidth = Math.round(getTextWidth(value)) + paddingX;
             const totalWidth = labelWidth + valueWidth;
 
-            //SVG模板
             return `
               <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20" role="img" aria-label="${label}: ${value}">
                 <title>${label}: ${value}</title>
@@ -473,17 +389,14 @@
               </svg>`;
         };
 
-        // --- 数据获取与渲染 ---
+        // --- 异步获取数据并更新徽章 ---
         const parseColo = (traceText) => {
           const line = traceText.split('\n').find(line => line.startsWith('colo='));
           return line ? line.split('=')[1] : null;
         };
     
-        const fetchBadgeInfo = async (siteLabel, domain, badgeContainerId) => {
-          const badgeContainer = document.getElementById(badgeContainerId);
-          // 设置加载状态的徽章
-          badgeContainer.innerHTML = createBadgeSVG(siteLabel, '加载中...', '#9f9f9f');
-
+        const fetchBadgeInfo = async (siteLabel, domain, badgeContainerEl) => {
+          badgeContainerEl.innerHTML = createBadgeSVG(siteLabel, '查询中...', '#9f9f9f');
           try {
             const traceResponse = await fetch(`https://${domain}/cdn-cgi/trace`);
             if (!traceResponse.ok) throw new Error('Trace fetch failed');
@@ -491,83 +404,63 @@
             const colo = parseColo(traceText);
     
             if (colo) {
-              let location = '未知'; // 默认位置
+              let location = '未知';
               try {
                 const locResponse = await fetch(`https://iata.isteed.cc/zh/${colo}`);
-                if (locResponse.ok) {
-                  location = await locResponse.text() || '未知';
-                }
+                if (locResponse.ok) location = await locResponse.text() || '未知';
               } catch (locError) {
                 console.error(`Error fetching location for ${colo}:`, locError);
                 location = '查询失败';
               }
-              const finalValue = `${colo} ${location}`;
-              badgeContainer.innerHTML = createBadgeSVG(siteLabel, finalValue, '#4c1'); // 成功时使用绿色
+              badgeContainerEl.innerHTML = createBadgeSVG(siteLabel, `${colo} ${location}`, '#4c1');
             } else {
-              throw new Error('Colo not found in trace');
+              throw new Error('Colo not found');
             }
-          } catch (traceError) {
-            console.error(`Error fetching trace for ${domain}:`, traceError);
-            badgeContainer.innerHTML = createBadgeSVG(siteLabel, '获取失败', '#e05d44'); // 失败时使用红色
+          } catch (error) {
+            console.error(`Error fetching data for ${domain}:`, error);
+            badgeContainerEl.innerHTML = createBadgeSVG(siteLabel, '获取失败', '#e05d44');
           }
         };
     
-        const initializeDatacenterInfo = () => {
-          const sites = [
-            { label: 'Main Site', domain: 'oplist.022928.xyz', badgeId: 'main-site-badge' },
-            { label: 'R2 Storage', domain: 'fast-r2.022928.xyz', badgeId: 'r2-storage-badge' }
-            // 如果有更多站点，可以在这里添加
-            // { label: 'Another Site', domain: 'another.example.com', badgeId: 'another-site-badge' }
-          ];
-
-          // 创建底部容器和flex容器
-          const footerContainer = document.createElement('div');
-          footerContainer.className = 'footer-datacenter-info';
-          
-          const badgesFlexContainer = document.createElement('div');
-          badgesFlexContainer.className = 'badges-flex-container';
-
-          // 为每个站点创建占位符div，并添加到flex容器中
-          sites.forEach(site => {
-            const badgeDiv = document.createElement('div');
-            badgeDiv.id = site.badgeId;
-            badgeDiv.className = 'datacenter-badge';
-            badgesFlexContainer.appendChild(badgeDiv);
-          });
-
-          // 将flex容器添加到主容器，再添加到body
-          footerContainer.appendChild(badgesFlexContainer);
-          document.body.appendChild(footerContainer);
-
-          // 设置页脚信息，并在它下面添加标题
-          const originalFooter = document.querySelector('.footer');
-          if (originalFooter) {
-            const footerTitle = document.createElement('h4');
-            footerTitle.textContent = '数据中心状态';
-            footerTitle.style.textAlign = 'center';
-            footerTitle.style.marginBottom = '10px';
-            footerTitle.style.marginTop = '0'; 
-            footerContainer.insertBefore(footerTitle, badgesFlexContainer);
+        // --- 主逻辑：等待页脚出现，然后注入徽章容器 ---
+        const observer = new MutationObserver((mutations, obs) => {
+          const originalFooter = document.querySelector(".footer");
+          // 确保页脚存在且我们的自定义容器尚未添加
+          if (originalFooter && !document.querySelector('.custom-footer-badges')) {
             
-            // 确保数据中心信息显示在原始页脚之上
-            originalFooter.style.position = 'relative';
-            originalFooter.style.zIndex = '1'; 
-            footerContainer.style.zIndex = '2'; 
-          }
+            // 1. 定义需要显示的站点列表
+            const sites = [
+              { label: 'Main Site', domain: 'oplist.022928.xyz' },
+              { label: 'R2 Storage', domain: 'fast-r2.022928.xyz' }
+              // 如需更多，在此处添加新行: { label: '新站点', domain: 'new.site.com' }
+            ];
 
-          // 开始获取数据并更新徽章
-          sites.forEach(site => fetchBadgeInfo(site.label, site.domain, site.badgeId));
-        };
+            // 2. 创建我们的主容器
+            const badgeContainer = document.createElement('div');
+            badgeContainer.className = 'custom-footer-badges';
+
+            // 3. 将容器插入到原始页脚的前面
+            originalFooter.parentNode.insertBefore(badgeContainer, originalFooter);
+            
+            // 4. 为每个站点创建占位符并开始获取数据
+            sites.forEach((site, index) => {
+              const span = document.createElement('span');
+              badgeContainer.appendChild(span);
+              fetchBadgeInfo(site.label, site.domain, span);
+            });
+
+            // 5. 任务完成，停止观察，避免不必要的性能开销
+            obs.disconnect();
+          }
+        });
     
-        // 确保在DOM加载完成后执行
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initializeDatacenterInfo);
-        } else {
-          initializeDatacenterInfo();
-        }
+        // 启动对整个文档的观察
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
       })();
     </script>
-    
-    <!-- END: 添加的代码结束 -->
+    <!-- END: 脚本结束 -->
   </body>
 </html>
