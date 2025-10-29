@@ -390,130 +390,97 @@
 
     <!-- START: 为数据中心信息添加的代码 -->
     <template id="datacenter-template">
-      <div id="datacenter-info">
+      <div class="datacenter-container">
         <h4>数据中心</h4>
-        <table id="datacenter-info-table">
-            <thead>
-                <tr>
-                    <th>服务</th>
-                    <th>CF Colo</th>
-                    <th>位置</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Main Site (oplist.022928.xyz)</td>
-                    <td id="main-site-colo"></td>
-                    <td id="main-site-loc"></td>
-                </tr>
-                <tr>
-                    <td>R2 Storage (fast-r2.022928.xyz)</td>
-                    <td id="r2-storage-colo"></td>
-                    <td id="r2-storage-loc"></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="badges-wrapper">
+          <div id="main-site-badge"></div>
+          <div id="r2-storage-badge"></div>
+        </div>
       </div>
     </template>
     
     <style>
-      #datacenter-info {
+      .datacenter-container {
+        max-width: 600px;
+        margin: 20px auto 40px;
+        padding: 15px;
+        border-radius: 12px;
         text-align: center;
-        padding: 20px 10px 40px 10px;
         font-size: 14px;
         clear: both;
+        transition: background-color 0.3s ease;
       }
-      #datacenter-info-table {
-        margin: 10px auto 0;
-        border-collapse: collapse;
-        width: 90%;
-        max-width: 600px;
-        background-color: transparent;
-        border-radius: 8px;
-        overflow: hidden; 
-      }
-      #datacenter-info-table th, 
-      #datacenter-info-table td {
-        padding: 8px;
-        border: 1px solid;
-        vertical-align: middle;
-      }
-      #datacenter-info-table th {
-        font-weight: bold;
+      .badges-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px; /* 徽章之间的垂直间距 */
+        margin-top: 10px;
       }
     
-      /* 浅色模式 */
-      .hope-ui-light #datacenter-info { color: rgba(0, 0, 0, 0.7); }
-      .hope-ui-light #datacenter-info-table th,
-      .hope-ui-light #datacenter-info-table td { border-color: rgba(0, 0, 0, 0.15); }
-      .hope-ui-light #datacenter-info-table thead { background-color: rgba(255, 255, 255, 0.3); }
+      /* 浅色模式模糊背景 */
+      .hope-ui-light .datacenter-container {
+        background-color: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(5px);
+        color: rgba(0, 0, 0, 0.7);
+      }
     
-      /* 深色模式 */
-      .hope-ui-dark #datacenter-info { color: rgba(255, 255, 255, 0.8); }
-      .hope-ui-dark #datacenter-info-table th,
-      .hope-ui-dark #datacenter-info-table td { border-color: rgba(255, 255, 255, 0.2); }
-      .hope-ui-dark #datacenter-info-table thead { background-color: rgba(0, 0, 0, 0.2); }
+      /* 深色模式模糊背景 */
+      .hope-ui-dark .datacenter-container {
+        background-color: rgb(0 0 0 / 50%);
+        backdrop-filter: blur(5px);
+        color: rgba(255, 255, 255, 0.8);
+      }
     </style>
     
     <script>
       (function() {
         // --- SVG徽章生成器 ---
-
-        // 辅助函数：精确测量文本宽度
-        const getTextWidth = (text, font = "11px Verdana,Geneva,DejaVu Sans,sans-serif") => {
+        const getTextWidth = (text, font = "bold 11px Verdana,Geneva,DejaVu Sans,sans-serif") => {
             const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
             const context = canvas.getContext("2d");
             context.font = font;
-            const metrics = context.measureText(text);
-            return metrics.width;
+            return context.measureText(text).width;
         };
 
-        // 主函数：创建SVG徽章
-        const createBadgeSVG = (label, value, labelColor = '#555', valueColor = '#9b90c2') => {
+        const createBadgeSVG = (label, value, valueColor = '#4c1') => {
+            const labelColor = '#555';
             const paddingX = 10;
             const labelWidth = Math.round(getTextWidth(label)) + paddingX;
             const valueWidth = Math.round(getTextWidth(value)) + paddingX;
             const totalWidth = labelWidth + valueWidth;
 
-            // 使用模板字符串构建SVG
             return `
               <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20" role="img" aria-label="${label}: ${value}">
                 <title>${label}: ${value}</title>
                 <linearGradient id="s" x2="0" y2="100%">
-                  <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
-                  <stop offset="1" stop-opacity=".1"/>
+                  <stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/>
                 </linearGradient>
-                <clipPath id="r">
-                  <rect width="${totalWidth}" height="20" rx="3" fill="#fff"/>
-                </clipPath>
+                <clipPath id="r"><rect width="${totalWidth}" height="20" rx="3" fill="#fff"/></clipPath>
                 <g clip-path="url(#r)">
                   <rect width="${labelWidth}" height="20" fill="${labelColor}"/>
                   <rect x="${labelWidth}" width="${valueWidth}" height="20" fill="${valueColor}"/>
                   <rect width="${totalWidth}" height="20" fill="url(#s)"/>
                 </g>
-                <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="11">
-                  <text aria-hidden="true" x="${labelWidth / 2}" y="15" fill="#010101" fill-opacity=".3" transform="scale(1)" textLength="${labelWidth - paddingX}">${label}</text>
-                  <text x="${labelWidth / 2}" y="14" transform="scale(1)" textLength="${labelWidth - paddingX}">${label}</text>
-                  <text aria-hidden="true" x="${labelWidth + valueWidth / 2}" y="15" fill="#010101" fill-opacity=".3" transform="scale(1)" textLength="${valueWidth - paddingX}">${value}</text>
-                  <text x="${labelWidth + valueWidth / 2}" y="14" transform="scale(1)" textLength="${valueWidth - paddingX}">${value}</text>
+                <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-weight="bold" text-rendering="geometricPrecision" font-size="11">
+                  <text x="${labelWidth / 2}" y="15" fill="#010101" fill-opacity=".3">${label}</text>
+                  <text x="${labelWidth / 2}" y="14">${label}</text>
+                  <text x="${labelWidth + valueWidth / 2}" y="15" fill="#010101" fill-opacity=".3">${value}</text>
+                  <text x="${labelWidth + valueWidth / 2}" y="14">${value}</text>
                 </g>
               </svg>`;
         };
 
         // --- 数据获取与渲染 ---
-
         const parseColo = (traceText) => {
           const line = traceText.split('\n').find(line => line.startsWith('colo='));
           return line ? line.split('=')[1] : null;
         };
     
-        const fetchDatacenterInfo = async (domain, coloElId, locElId) => {
-          const coloEl = document.getElementById(coloElId);
-          const locEl = document.getElementById(locElId);
-          
-          // 设置加载状态的徽章
-          coloEl.innerHTML = createBadgeSVG('CF Colo', '...', '#555', '#9f9f9f');
-          locEl.innerHTML = createBadgeSVG('Location', '...', '#555', '#9f9f9f');
+        const fetchBadgeInfo = async (siteLabel, domain, badgeElId) => {
+          const badgeEl = document.getElementById(badgeElId);
+          // 初始加载状态
+          badgeEl.innerHTML = createBadgeSVG(siteLabel, '查询中...', '#9f9f9f');
 
           try {
             const traceResponse = await fetch(`https://${domain}/cdn-cgi/trace`);
@@ -522,42 +489,42 @@
             const colo = parseColo(traceText);
     
             if (colo) {
-              coloEl.innerHTML = createBadgeSVG('CF Colo', colo, '#555', '#33a3dc');
+              let location = '查询位置失败';
               try {
                 const locResponse = await fetch(`https://iata.isteed.cc/zh/${colo}`);
-                if (!locResponse.ok) throw new Error('Location fetch failed');
-                const location = await locResponse.text();
-                locEl.innerHTML = createBadgeSVG('Location', location || '未知', '#555', '#33a3dc');
+                if (locResponse.ok) {
+                  location = await locResponse.text() || '未知';
+                }
               } catch (locError) {
                 console.error(`Error fetching location for ${colo}:`, locError);
-                locEl.innerHTML = createBadgeSVG('Location', '查询失败', '#555', '#e05d44');
               }
+              const finalValue = `${colo} ${location}`;
+              badgeEl.innerHTML = createBadgeSVG(siteLabel, finalValue, '#4c1'); // Green for success
             } else {
               throw new Error('Colo not found in trace');
             }
           } catch (traceError) {
             console.error(`Error fetching trace for ${domain}:`, traceError);
-            coloEl.innerHTML = createBadgeSVG('CF Colo', '获取失败', '#555', '#e05d44');
-            locEl.innerHTML = createBadgeSVG('Location', 'N/A', '#555', '#e05d44');
+            badgeEl.innerHTML = createBadgeSVG(siteLabel, '获取失败', '#e05d44'); // Red for error
           }
         };
     
         const initializeDatacenterInfo = () => {
           const sites = [
-            { domain: 'oplist.022928.xyz', coloId: 'main-site-colo', locId: 'main-site-loc' },
-            { domain: 'fast-r2.022928.xyz', coloId: 'r2-storage-colo', locId: 'r2-storage-loc' }
+            { label: 'Main Site', domain: 'oplist.022928.xyz', badgeId: 'main-site-badge' },
+            { label: 'R2 Storage', domain: 'fast-r2.022928.xyz', badgeId: 'r2-storage-badge' }
           ];
-          sites.forEach(site => fetchDatacenterInfo(site.domain, site.coloId, site.locId));
+          sites.forEach(site => fetchBadgeInfo(site.label, site.domain, site.badgeId));
         };
     
         const observer = new MutationObserver((mutations, obs) => {
           const footer = document.querySelector(".footer");
-          if (footer) {
+          if (footer && !document.querySelector('.datacenter-container')) {
             const template = document.getElementById('datacenter-template');
             const datacenterContent = template.content.cloneNode(true);
             footer.parentNode.insertBefore(datacenterContent, footer.nextSibling);
             initializeDatacenterInfo();
-            obs.disconnect();
+            obs.disconnect(); // 任务完成，停止监视
           }
         });
     
