@@ -365,11 +365,12 @@
 
         const createBadgeSVG = (label, value, valueColor = '#4c1') => {
             const labelColor = '#555';
-            const paddingX = 10;
+            const paddingX = 14; // 增加内边距，提供更多呼吸空间
             const labelWidth = Math.round(getTextWidth(label)) + paddingX;
             const valueWidth = Math.round(getTextWidth(value)) + paddingX;
             const totalWidth = labelWidth + valueWidth;
 
+            // **已移除 textLength 属性以修复文字溢出问题**
             return `
               <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20" role="img" aria-label="${label}: ${value}">
                 <title>${label}: ${value}</title>
