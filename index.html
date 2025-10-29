@@ -336,7 +336,54 @@
         white-space: unset !important;
         overflow: unset !important;
       }
+
+      /* --- 新增的底部数据中心信息样式 --- */
+      .footer-datacenter-info {
+        position: fixed; /* 固定在页面底部 */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px 0; /* 底部留白 */
+        text-align: center;
+        font-size: 12px;
+        z-index: 1000; /* 确保在其他内容之上 */
+        transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+        box-sizing: border-box; /* 包含padding和border在宽度内 */
+      }
+      
+      /* 浅色模式模糊背景 */
+      .hope-ui-light .footer-datacenter-info {
+        background-color: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(6px);
+        color: rgba(0, 0, 0, 0.7);
+      }
+    
+      /* 深色模式模糊背景 */
+      .hope-ui-dark .footer-datacenter-info {
+        background-color: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(6px);
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .badges-flex-container {
+        display: flex;
+        justify-content: center; /* 居中显示 */
+        align-items: center;
+        gap: 10px; /* 徽章之间的间距 */
+        padding: 5px 10px; /* 左右内边距 */
+        flex-wrap: wrap; /* 当空间不足时换行 */
+      }
+      
+      .datacenter-badge {
+        display: flex; /* 使用flex来排列徽章内部的文字 */
+        align-items: center; /* 垂直居中文本 */
+      }
+      
+      .datacenter-badge svg {
+        vertical-align: middle; /* 确保SVG与文本基线对齐 */
+      }
     </style>
+    
     <title>Loading...</title>
     <script>
       window.OPENLIST_CONFIG = {
@@ -389,50 +436,6 @@
     <!-- customize body -->
 
     <!-- START: 为数据中心信息添加的代码 -->
-    <template id="datacenter-template">
-      <div class="datacenter-container">
-        <h4>数据中心</h4>
-        <div class="badges-wrapper">
-          <div id="main-site-badge"></div>
-          <div id="r2-storage-badge"></div>
-        </div>
-      </div>
-    </template>
-    
-    <style>
-      .datacenter-container {
-        max-width: 600px;
-        margin: 20px auto 40px;
-        padding: 15px;
-        border-radius: 12px;
-        text-align: center;
-        font-size: 14px;
-        clear: both;
-        transition: background-color 0.3s ease;
-      }
-      .badges-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px; /* 徽章之间的垂直间距 */
-        margin-top: 10px;
-      }
-    
-      /* 浅色模式模糊背景 */
-      .hope-ui-light .datacenter-container {
-        background-color: rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(5px);
-        color: rgba(0, 0, 0, 0.7);
-      }
-    
-      /* 深色模式模糊背景 */
-      .hope-ui-dark .datacenter-container {
-        background-color: rgb(0 0 0 / 50%);
-        backdrop-filter: blur(5px);
-        color: rgba(255, 255, 255, 0.8);
-      }
-    </style>
-    
     <script>
       (function() {
         // --- SVG徽章生成器 ---
@@ -444,18 +447,17 @@
         };
 
         const createBadgeSVG = (label, value, valueColor = '#4c1') => {
-            const labelColor = '#555';
-            const paddingX = 10;
+            const labelColor = '#555'; // 左侧标签颜色
+            const paddingX = 10; // 左右内边距
             const labelWidth = Math.round(getTextWidth(label)) + paddingX;
             const valueWidth = Math.round(getTextWidth(value)) + paddingX;
             const totalWidth = labelWidth + valueWidth;
 
+            //SVG模板
             return `
               <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20" role="img" aria-label="${label}: ${value}">
                 <title>${label}: ${value}</title>
-                <linearGradient id="s" x2="0" y2="100%">
-                  <stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/>
-                </linearGradient>
+                <linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>
                 <clipPath id="r"><rect width="${totalWidth}" height="20" rx="3" fill="#fff"/></clipPath>
                 <g clip-path="url(#r)">
                   <rect width="${labelWidth}" height="20" fill="${labelColor}"/>
@@ -477,10 +479,10 @@
           return line ? line.split('=')[1] : null;
         };
     
-        const fetchBadgeInfo = async (siteLabel, domain, badgeElId) => {
-          const badgeEl = document.getElementById(badgeElId);
-          // 初始加载状态
-          badgeEl.innerHTML = createBadgeSVG(siteLabel, '查询中...', '#9f9f9f');
+        const fetchBadgeInfo = async (siteLabel, domain, badgeContainerId) => {
+          const badgeContainer = document.getElementById(badgeContainerId);
+          // 设置加载状态的徽章
+          badgeContainer.innerHTML = createBadgeSVG(siteLabel, '加载中...', '#9f9f9f');
 
           try {
             const traceResponse = await fetch(`https://${domain}/cdn-cgi/trace`);
@@ -489,7 +491,7 @@
             const colo = parseColo(traceText);
     
             if (colo) {
-              let location = '查询位置失败';
+              let location = '未知'; // 默认位置
               try {
                 const locResponse = await fetch(`https://iata.isteed.cc/zh/${colo}`);
                 if (locResponse.ok) {
@@ -497,15 +499,16 @@
                 }
               } catch (locError) {
                 console.error(`Error fetching location for ${colo}:`, locError);
+                location = '查询失败';
               }
               const finalValue = `${colo} ${location}`;
-              badgeEl.innerHTML = createBadgeSVG(siteLabel, finalValue, '#4c1'); // Green for success
+              badgeContainer.innerHTML = createBadgeSVG(siteLabel, finalValue, '#4c1'); // 成功时使用绿色
             } else {
               throw new Error('Colo not found in trace');
             }
           } catch (traceError) {
             console.error(`Error fetching trace for ${domain}:`, traceError);
-            badgeEl.innerHTML = createBadgeSVG(siteLabel, '获取失败', '#e05d44'); // Red for error
+            badgeContainer.innerHTML = createBadgeSVG(siteLabel, '获取失败', '#e05d44'); // 失败时使用红色
           }
         };
     
@@ -513,22 +516,55 @@
           const sites = [
             { label: 'Main Site', domain: 'oplist.022928.xyz', badgeId: 'main-site-badge' },
             { label: 'R2 Storage', domain: 'fast-r2.022928.xyz', badgeId: 'r2-storage-badge' }
+            // 如果有更多站点，可以在这里添加
+            // { label: 'Another Site', domain: 'another.example.com', badgeId: 'another-site-badge' }
           ];
+
+          // 创建底部容器和flex容器
+          const footerContainer = document.createElement('div');
+          footerContainer.className = 'footer-datacenter-info';
+          
+          const badgesFlexContainer = document.createElement('div');
+          badgesFlexContainer.className = 'badges-flex-container';
+
+          // 为每个站点创建占位符div，并添加到flex容器中
+          sites.forEach(site => {
+            const badgeDiv = document.createElement('div');
+            badgeDiv.id = site.badgeId;
+            badgeDiv.className = 'datacenter-badge';
+            badgesFlexContainer.appendChild(badgeDiv);
+          });
+
+          // 将flex容器添加到主容器，再添加到body
+          footerContainer.appendChild(badgesFlexContainer);
+          document.body.appendChild(footerContainer);
+
+          // 设置页脚信息，并在它下面添加标题
+          const originalFooter = document.querySelector('.footer');
+          if (originalFooter) {
+            const footerTitle = document.createElement('h4');
+            footerTitle.textContent = '数据中心状态';
+            footerTitle.style.textAlign = 'center';
+            footerTitle.style.marginBottom = '10px';
+            footerTitle.style.marginTop = '0'; 
+            footerContainer.insertBefore(footerTitle, badgesFlexContainer);
+            
+            // 确保数据中心信息显示在原始页脚之上
+            originalFooter.style.position = 'relative';
+            originalFooter.style.zIndex = '1'; 
+            footerContainer.style.zIndex = '2'; 
+          }
+
+          // 开始获取数据并更新徽章
           sites.forEach(site => fetchBadgeInfo(site.label, site.domain, site.badgeId));
         };
     
-        const observer = new MutationObserver((mutations, obs) => {
-          const footer = document.querySelector(".footer");
-          if (footer && !document.querySelector('.datacenter-container')) {
-            const template = document.getElementById('datacenter-template');
-            const datacenterContent = template.content.cloneNode(true);
-            footer.parentNode.insertBefore(datacenterContent, footer.nextSibling);
-            initializeDatacenterInfo();
-            obs.disconnect(); // 任务完成，停止监视
-          }
-        });
-    
-        observer.observe(document.body, { childList: true, subtree: true });
+        // 确保在DOM加载完成后执行
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initializeDatacenterInfo);
+        } else {
+          initializeDatacenterInfo();
+        }
       })();
     </script>
     
