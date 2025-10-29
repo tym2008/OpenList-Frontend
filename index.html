@@ -103,16 +103,17 @@
   }, 150);
 </script>
     <style>
-      /*白天背景图*/
+      /* --- 全局背景图 (移除此处的背景模糊) --- */
+      /* 白天背景图 */
       .hope-ui-light {
         background-image: url("https://t.alcy.cc/ycy") !important;
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
         background-position-x: center;
-        backdrop-filter: blur(3px);
+        /* backdrop-filter: blur(3px);  <-- 已从此位置移除 */
       }
-      /*夜间背景图*/
+      /* 夜间背景图 */
       .hope-ui-dark {
         background-image:
           linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
@@ -122,187 +123,147 @@
         background-attachment: fixed;
         background-position-x: center;
       }
-      /*主列表白天模式透明*/
-      .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-igScBhH-css {
+
+      /* --- 主要UI面板玻璃效果 (新增或修正 backdrop-filter) --- */
+      /* 定义一个通用的玻璃效果类 */
+      .glass-effect-light {
         background-color: rgba(255, 255, 255, 0.5) !important;
+        backdrop-filter: blur(5px) !important;
+        -webkit-backdrop-filter: blur(5px) !important; /* 兼容Safari */
       }
-      /*主列表夜间模式透明*/
-      .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-iigjoxS-css {
+      .glass-effect-dark {
         background-color: rgb(0 0 0 / 50%) !important;
+        backdrop-filter: blur(5px) !important;
+        -webkit-backdrop-filter: blur(5px) !important; /* 兼容Safari */
       }
-      /*readme白天模式透明*/
-      .hope-c-PJLV.hope-c-PJLV-ikSuVsl-css {
+      
+      /* 将效果应用到具体元素 */
+      /* 主列表 */
+      .hope-ui-light .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-igScBhH-css {
         background-color: rgba(255, 255, 255, 0.5) !important;
+        backdrop-filter: blur(5px) !important;
       }
-      /*readme夜间模式透明*/
-      .hope-c-PJLV.hope-c-PJLV-iiuDLME-css {
+      .hope-ui-dark .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-iigjoxS-css {
         background-color: rgb(0 0 0 / 50%) !important;
+        backdrop-filter: blur(5px) !important;
       }
-      /*顶部右上角切换按钮透明*/
-      .hope-ui-light .hope-c-ivMHWx-hZistB-cv.hope-icon-button {
-        background-color: rgba(255, 255, 255, 0.3) !important;
-      }
-      .hope-ui-dark .hope-c-ivMHWx-hZistB-cv.hope-icon-button {
-        background-color: rgb(0 0 0 / 10%) !important;
-      }
-      /*右下角侧边栏按钮透明 第一个是白天 第二个是夜间*/
-      .hope-ui-light .hope-c-PJLV-ijgzmFG-css {
+      /* README区域 */
+      .hope-ui-light .hope-c-PJLV.hope-c-PJLV-ikSuVsl-css {
         background-color: rgba(255, 255, 255, 0.5) !important;
+        backdrop-filter: blur(5px) !important;
       }
-      .hope-ui-dark .hope-c-PJLV-ijgzmFG-css {
+      .hope-ui-dark .hope-c-PJLV.hope-c-PJLV-iiuDLME-css {
         background-color: rgb(0 0 0 / 50%) !important;
+        backdrop-filter: blur(5px) !important;
       }
-      /*白天模式代码块透明*/
-      .hope-ui-light pre {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-      }
-      /*夜间模式代码块透明*/
-      .hope-ui-dark pre {
-        background-color: rgba(255, 255, 255, 0) !important;
-      }
-      /*左侧侧边栏目录*/
-      /*白天模式*/
+      /* 左侧侧边栏 */
       .hope-ui-light .hope-c-PJLV-ieGWMbI-css {
         background: rgba(255, 255, 255, 0.3) !important;
+        backdrop-filter: blur(5px) !important;
       }
-      /*夜间模式*/
       .hope-ui-dark .hope-c-PJLV-ieGWMbI-css {
         background-color: rgb(0 0 0 / 50%) !important;
+        backdrop-filter: blur(5px) !important;
       }
-      /* 返回顶部 */
-      .hope-c-PJLV-ihVEsOa-css {
-        background: rgba(255, 255, 255, 0.3) !important;
-      }
-      .hope-ui-dark .hope-c-PJLV-ihVEsOa-css {
-        background-color: rgb(0 0 0 / 50%) !important;
-      }
-      /*正常情况未使用吸附功能*/
-      /*导航条*/
-      /*白天模式*/
+      /* 正常情况下的导航条 */
       .hope-ui-light .hope-c-PJLV-idaeksS-css {
         background-color: rgba(255, 255, 255, 0.5) !important;
+        backdrop-filter: blur(5px) !important;
         border-radius: 10px !important;
       }
-      /*夜间模式*/
       .hope-ui-dark .hope-c-PJLV-idaeksS-css {
         background-color: rgb(0 0 0 / 50%) !important;
+        backdrop-filter: blur(5px) !important;
         border-radius: 10px !important;
       }
-      /*顶栏*/
-      .hope-c-PJLV-ikaMhsQ-css {
-        background: rgba(255, 255, 255, 0) !important;
+      /* 滚动时吸顶的导航条 */
+      .hope-ui-light .hope-c-PJLV-icKsjdm-css,
+      .hope-ui-light .hope-c-hrsMRY {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+        backdrop-filter: blur(5px) !important;
+        border-radius: 10px !important;
       }
-      /*白天模式 搜索主体+毛玻璃*/
-      .hope-ui-light .hope-c-PJLV-iiBaxsN-css {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-        backdrop-filter: blur(10px) !important;
+      .hope-ui-dark .hope-c-PJLV-icKsjdm-css,
+      .hope-ui-dark .hope-c-hrsMRY {
+        background-color: rgb(0 0 0 / 50%) !important;
+        backdrop-filter: blur(5px) !important;
+        border-radius: 10px !important;
       }
-      /*白天模式 搜索栏输入框+毛玻璃*/
-      .hope-ui-light .hope-c-kvTTWD-hYRNAb-variant-filled {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-        backdrop-filter: blur(10px) !important;
+
+      /* --- 其他UI元素透明度调整 --- */
+      /* 完全透明的顶栏容器，让导航条的模糊效果透出来 */
+      .hope-c-PJLV-ikaMhsQ-css,
+      .hope-c-PJLV-icWrYmg-css {
+        background: transparent !important;
       }
-      /*白天模式 搜索按钮+毛玻璃*/
+      /* 移除导航条吸顶时的伪元素阴影 */
+      .hope-c-PJLV-icKsjdm-css::after,
+      .hope-c-PJLV-ifdXShc-css::after {
+        background: transparent !important;
+      }
+
+      /* 右上角按钮 */
+      .hope-ui-light .hope-c-ivMHWx-hZistB-cv.hope-icon-button { background-color: rgba(255, 255, 255, 0.3) !important; }
+      .hope-ui-dark .hope-c-ivMHWx-hZistB-cv.hope-icon-button { background-color: rgb(0 0 0 / 10%) !important; }
+
+      /* 右下角工具栏按钮 */
+      .hope-ui-light .hope-c-PJLV-ijgzmFG-css { background-color: rgba(255, 255, 255, 0.5) !important; }
+      .hope-ui-dark .hope-c-PJLV-ijgzmFG-css { background-color: rgb(0 0 0 / 50%) !important; }
+
+      /* 返回顶部按钮 */
+      .hope-ui-light .hope-c-PJLV-ihVEsOa-css { background: rgba(255, 255, 255, 0.3) !important; }
+      .hope-ui-dark .hope-c-PJLV-ihVEsOa-css { background-color: rgb(0 0 0 / 50%) !important; }
+
+      /* 代码块 */
+      .hope-ui-light pre { background-color: rgba(255, 255, 255, 0.1) !important; }
+      .hope-ui-dark pre { background-color: transparent !important; }
+
+      /* --- 搜索框玻璃效果 (这个之前已经有了, 保持即可) --- */
+      .hope-ui-light .hope-c-PJLV-iiBaxsN-css,
+      .hope-ui-light .hope-c-kvTTWD-hYRNAb-variant-filled,
       .hope-ui-light .hope-c-PJLV-ikEIIxw-css {
         background-color: rgba(255, 255, 255, 0.2) !important;
         backdrop-filter: blur(10px) !important;
-        padding: var(--hope-space-1) !important;
       }
-      /*夜间模式搜索主体+毛玻璃*/
-      .hope-ui-dark .hope-c-PJLV-iiBaxsN-css {
-        background-color: rgb(0 0 0 / 10%) !important;
-        backdrop-filter: blur(10px) !important;
-      }
-      /*夜间模式搜索栏+毛玻璃*/
-      .hope-ui-dark .hope-c-kvTTWD-hYRNAb-variant-filled {
-        background-color: rgb(0 0 0 / 10%) !important;
-        backdrop-filter: blur(10px) !important;
-      }
-      /*夜间模式 搜索按钮+毛玻璃*/
+      .hope-ui-dark .hope-c-PJLV-iiBaxsN-css,
+      .hope-ui-dark .hope-c-kvTTWD-hYRNAb-variant-filled,
       .hope-ui-dark .hope-c-PJLV-ikEIIxw-css {
         background-color: rgb(0 0 0 / 10%) !important;
         backdrop-filter: blur(10px) !important;
-        padding: var(--hope-space-1) !important;
       }
-      /* 吸附到页面顶部 */
-      /*顶部*/
-      .hope-c-PJLV-icWrYmg-css {
-        background: rgba(255, 255, 255, 0) !important;
+      .hope-ui-light .hope-c-PJLV-ikEIIxw-css,
+      .hope-ui-dark .hope-c-PJLV-ikEIIxw-css {
+         padding: var(--hope-space-1) !important;
       }
-      /*导航条*/
-      .hope-c-PJLV-icKsjdm-css::after {
-        background: rgba(255, 255, 255, 0) !important;
-      }
-      /*白天模式*/
-      .hope-ui-light .hope-c-PJLV-icKsjdm-css {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        border-radius: 10px !important;
-      }
-      /*夜间模式*/
-      .hope-ui-dark .hope-c-PJLV-icKsjdm-css {
-        background-color: rgb(0 0 0 / 50%) !important;
-        border-radius: 10px !important;
-      }
-      /*仅吸附导航栏*/
-      /*导航条*/
-      .hope-c-PJLV-ifdXShc-css::after {
-        background: rgba(255, 255, 255, 0) !important;
-      }
-      /*白天模式*/
-      .hope-ui-light .hope-c-hrsMRY {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        border-radius: 10px !important;
-      }
-      /*夜间模式*/
-      .hope-ui-dark .hope-c-hrsMRY {
-        background-color: rgb(0 0 0 / 50%) !important;
-        border-radius: 10px !important;
-      }
-      /*全局字体*/
+      
+      /* --- 全局字体与布局 --- */
       * {
         font-family: LXGW WenKai;
         font-weight: bold;
       }
-      body {
-        font-family: LXGW WenKai;
-      }
-      /*渐变背景CSS*/
-      #canvas-basic {
-        position: fixed;
-        display: block;
-        width: 100%;
-        height: 100%;
-        top: 0; right: 0; bottom: 0; left: 0;
-        z-index: -999;
-      }
-      /* 隐藏 通知栏的X */
-      .hope-close-button { display: none !important; }
-      /* 隐藏 右下角 */
-      .left-toolbar-box { display: none; }
-      /* 文字超长自动换行 */
+      body { font-family: LXGW WenKai; }
       .name-box.name { white-space: unset !important; overflow: unset !important; }
+      .left-toolbar-box, .hope-close-button { display: none !important; }
 
       /* --- 数据中心徽章容器样式 --- */
       .custom-footer-badges {
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-wrap: wrap; /* 允许换行 */
-        gap: 10px; /* 徽章间距 */
+        flex-wrap: wrap;
+        gap: 10px;
         padding: 20px 15px;
-        margin: 20px auto; /* 上下边距和水平居中 */
+        margin: 20px auto;
         max-width: 90%;
-        width: fit-content; /* 宽度自适应内容 */
+        width: fit-content;
         min-width: 300px;
         border-radius: 12px;
         transition: background-color 0.3s ease;
       }
-      /* 浅色模式模糊背景 */
       .hope-ui-light .custom-footer-badges {
         background-color: rgba(255, 255, 255, 0.5);
         backdrop-filter: blur(5px);
       }
-      /* 深色模式模糊背景 */
       .hope-ui-dark .custom-footer-badges {
         background-color: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(5px);
@@ -330,25 +291,6 @@
         }
       }, 200);
     </script>
-    
-    <!-- 渐变背景初始化 (可选) -->
-    <!--<canvas id="canvas-basic"></canvas>-->
-    <!--<script async src="https://npm.elemecdn.com/granim@2.0.0/dist/granim.min.js"></script>-->
-    <script>
-      var granimInstance = new Granim({
-        element: "#canvas-basic",
-        direction: "left-right",
-        isPausedWhenNotInView: true,
-        states: {
-          "default-state": {
-            gradients: [
-              ["#a18cd1", "#fbc2eb"], ["#fff1eb", "#ace0f9"],
-              ["#d4fc79", "#96e6a1"], ["#a1c4fd", "#c2e9fb"],
-            ],
-          },
-        },
-      });
-    </script>
 
     <script src="/src/main.tsx" type="module"></script>
     
@@ -360,17 +302,16 @@
             const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
             const context = canvas.getContext("2d");
             context.font = font;
-            return context.measureText(text).width + 10;
+            return context.measureText(text).width + 5;
         };
 
         const createBadgeSVG = (label, value, valueColor = '#4c1') => {
             const labelColor = '#555';
-            const paddingX = 14; // 增加内边距，提供更多呼吸空间
+            const paddingX = 14;
             const labelWidth = Math.round(getTextWidth(label)) + paddingX;
             const valueWidth = Math.round(getTextWidth(value)) + paddingX;
             const totalWidth = labelWidth + valueWidth;
 
-            // **已移除 textLength 属性以修复文字溢出问题**
             return `
               <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20" role="img" aria-label="${label}: ${value}">
                 <title>${label}: ${value}</title>
@@ -426,37 +367,29 @@
         // --- 主逻辑：等待页脚出现，然后注入徽章容器 ---
         const observer = new MutationObserver((mutations, obs) => {
           const originalFooter = document.querySelector(".footer");
-          // 确保页脚存在且我们的自定义容器尚未添加
           if (originalFooter && !document.querySelector('.custom-footer-badges')) {
             
-            // 1. 定义需要显示的站点列表
             const sites = [
               { label: 'Main Site', domain: 'oplist.022928.xyz' },
               { label: 'Main API', domain: 'oplist-api.022928.xyz' },
               { label: 'R2 Storage', domain: 'fast-r2.022928.xyz' }
-              // 如需更多，在此处添加新行: { label: '新站点', domain: 'new.site.com' }
             ];
 
-            // 2. 创建我们的主容器
             const badgeContainer = document.createElement('div');
             badgeContainer.className = 'custom-footer-badges';
 
-            // 3. 将容器插入到原始页脚的前面
             originalFooter.parentNode.insertBefore(badgeContainer, originalFooter);
             
-            // 4. 为每个站点创建占位符并开始获取数据
-            sites.forEach((site, index) => {
+            sites.forEach((site) => {
               const span = document.createElement('span');
               badgeContainer.appendChild(span);
               fetchBadgeInfo(site.label, site.domain, span);
             });
 
-            // 5. 任务完成，停止观察，避免不必要的性能开销
             obs.disconnect();
           }
         });
     
-        // 启动对整个文档的观察
         observer.observe(document.body, {
           childList: true,
           subtree: true
