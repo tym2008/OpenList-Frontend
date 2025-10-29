@@ -67,11 +67,9 @@
       display: 'flex',
       alignItems: 'center',
       gap: '12px',
-      // 注意：这里不再需要 marginLeft: 'auto'，因为我们插入的位置是正确的，
-      // 页面原有的布局会自然地处理好间距
     });
     
-    // 5. 循环创建按钮（这部分逻辑不变）
+    // 5. 循环创建按钮
     customButtons.forEach(buttonInfo => {
       const newButton = document.createElement('a');
       newButton.href = buttonInfo.url;
@@ -121,13 +119,11 @@
     });
     
     // 6. 核心修正：在正确的父节点上执行插入操作
-    // 将我们的按钮容器(wrapper)，插入到原生按钮容器(nativeButtonsContainer)的前面
     insertionPoint.insertBefore(wrapper, nativeButtonsContainer);
   }
 
   // 轮询检查机制保持不变
   const checkInterval = setInterval(() => {
-    // 确保参考按钮已加载，这样我们就能找到正确的插入点
     if (document.querySelector('.hope-c-ivMHWx-hZistB-cv.hope-icon-button')) {
       addCustomHeaderButtons();
       clearInterval(checkInterval);
@@ -135,24 +131,6 @@
   }, 150);
 </script>
     <style>
-      /* 图片API用法点进去都会有食用说明的
-        樱花：https://www.dmoe.cc
-        夏沫：https://cdn.seovx.com
-        搏天：https://api.btstu.cn/doc/sjbz.php
-        姬长信：https://github.com/insoxin/API
-        保罗：https://api.paugram.com
-        岁月小筑：https://img.xjh.me
-        东方Project：https://img.paulzzh.com
-        https://www.loliapi.com/acg/
-        https://hefollo.com/apis.php?type=电脑端-动漫图片
-        https://t.alcy.cc/moe
-        https://3650000.xyz/
-        https://pic.re/images
-        https://t.alcy.cc/ys
-        https://eopageapi.2x.nz/pic?img=h
-        https://t.alcy.cc/ys
-    */
-
       /*白天背景图*/
       .hope-ui-light {
         background-image: url("https://t.alcy.cc/ycy") !important;
@@ -180,7 +158,6 @@
       .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-iigjoxS-css {
         background-color: rgb(0 0 0 / 50%) !important;
       }
-
       /*readme白天模式透明*/
       .hope-c-PJLV.hope-c-PJLV-ikSuVsl-css {
         background-color: rgba(255, 255, 255, 0.5) !important;
@@ -189,7 +166,6 @@
       .hope-c-PJLV.hope-c-PJLV-iiuDLME-css {
         background-color: rgb(0 0 0 / 50%) !important;
       }
-
       /*顶部右上角切换按钮透明*/
       .hope-ui-light .hope-c-ivMHWx-hZistB-cv.hope-icon-button {
         background-color: rgba(255, 255, 255, 0.3) !important;
@@ -197,7 +173,6 @@
       .hope-ui-dark .hope-c-ivMHWx-hZistB-cv.hope-icon-button {
         background-color: rgb(0 0 0 / 10%) !important;
       }
-
       /*右下角侧边栏按钮透明 第一个是白天 第二个是夜间*/
       .hope-ui-light .hope-c-PJLV-ijgzmFG-css {
         background-color: rgba(255, 255, 255, 0.5) !important;
@@ -205,7 +180,6 @@
       .hope-ui-dark .hope-c-PJLV-ijgzmFG-css {
         background-color: rgb(0 0 0 / 50%) !important;
       }
-
       /*白天模式代码块透明*/
       .hope-ui-light pre {
         background-color: rgba(255, 255, 255, 0.1) !important;
@@ -230,7 +204,6 @@
       .hope-ui-dark .hope-c-PJLV-ihVEsOa-css {
         background-color: rgb(0 0 0 / 50%) !important;
       }
-
       /*正常情况未使用吸附功能*/
       /*导航条*/
       /*白天模式*/
@@ -247,45 +220,38 @@
       .hope-c-PJLV-ikaMhsQ-css {
         background: rgba(255, 255, 255, 0) !important;
       }
-
       /*白天模式 搜索主体+毛玻璃*/
       .hope-ui-light .hope-c-PJLV-iiBaxsN-css {
         background-color: rgba(255, 255, 255, 0.2) !important;
         backdrop-filter: blur(10px) !important;
       }
-
       /*白天模式 搜索栏输入框+毛玻璃*/
       .hope-ui-light .hope-c-kvTTWD-hYRNAb-variant-filled {
         background-color: rgba(255, 255, 255, 0.2) !important;
         backdrop-filter: blur(10px) !important;
       }
-
       /*白天模式 搜索按钮+毛玻璃*/
       .hope-ui-light .hope-c-PJLV-ikEIIxw-css {
         background-color: rgba(255, 255, 255, 0.2) !important;
         backdrop-filter: blur(10px) !important;
         padding: var(--hope-space-1) !important;
       }
-
       /*夜间模式搜索主体+毛玻璃*/
       .hope-ui-dark .hope-c-PJLV-iiBaxsN-css {
         background-color: rgb(0 0 0 / 10%) !important;
         backdrop-filter: blur(10px) !important;
       }
-
       /*夜间模式搜索栏+毛玻璃*/
       .hope-ui-dark .hope-c-kvTTWD-hYRNAb-variant-filled {
         background-color: rgb(0 0 0 / 10%) !important;
         backdrop-filter: blur(10px) !important;
       }
-
       /*夜间模式 搜索按钮+毛玻璃*/
       .hope-ui-dark .hope-c-PJLV-ikEIIxw-css {
         background-color: rgb(0 0 0 / 10%) !important;
         backdrop-filter: blur(10px) !important;
         padding: var(--hope-space-1) !important;
       }
-
       /* 吸附到页面顶部 */
       /*顶部*/
       .hope-c-PJLV-icWrYmg-css {
@@ -305,7 +271,6 @@
         background-color: rgb(0 0 0 / 50%) !important;
         border-radius: 10px !important;
       }
-
       /*仅吸附导航栏*/
       /*导航条*/
       .hope-c-PJLV-ifdXShc-css::after {
@@ -321,7 +286,6 @@
         background-color: rgb(0 0 0 / 50%) !important;
         border-radius: 10px !important;
       }
-
       /*底部CSS，.App .table这三个一起的*/
       dibu {
         border-top: 0px;
@@ -337,12 +301,6 @@
       .table {
         margin: auto;
       }
-
-      /*去掉底部
-      .footer {
-        display: none !important;
-      }*/
-
       /*全局字体*/
       * {
         font-family: LXGW WenKai;
@@ -353,7 +311,6 @@
       body {
         font-family: LXGW WenKai;
       }
-
       /*渐变背景CSS*/
       #canvas-basic {
         position: fixed;
@@ -366,7 +323,6 @@
         left: 0;
         z-index: -999;
       }
-
       /* 隐藏 通知栏的X */
       .hope-close-button {
         display: none !important;
@@ -375,7 +331,6 @@
       .left-toolbar-box {
         display: none;
       }
-
       /* 文字超长自动换行 */
       .name-box.name {
         white-space: unset !important;
@@ -397,13 +352,8 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--延迟加载-->
-    <!--如果要写自定义内容建议都加到这个延迟加载的范围内-->
     <div id="customize" style="display: none">
-      <div>
-        <br />
-      </div>
-
-      <!--延迟加载范围到这里结束-->
+      <div><br /></div>
     </div>
     <!--延迟加载配套使用JS-->
     <script>
@@ -415,8 +365,7 @@
       }, 200)
     </script>
 
-    <!-- 渐变背景初始化,如果要使用渐变背景把下面的那一行注释去掉即可-->
-    <!-- 下面的几行都是渐变的一套,自定义头部内还有一个关联的自定义CSS -->
+    <!-- 渐变背景初始化 -->
     <!--<canvas id="canvas-basic"></canvas> -->
     <!--<script async src="https://npm.elemecdn.com/granim@2.0.0/dist/granim.min.js"></script>-->
     <script>
@@ -427,14 +376,9 @@
         states: {
           "default-state": {
             gradients: [
-              ["#a18cd1", "#fbc2eb"],
-              ["#fff1eb", "#ace0f9"],
-              ["#d4fc79", "#96e6a1"],
-              ["#a1c4fd", "#c2e9fb"],
-              ["#a8edea", "#fed6e3"],
-              ["#9890e3", "#b1f4cf"],
-              ["#a1c4fd", "#c2e9fb"],
-              ["#fff1eb", "#ace0f9"],
+              ["#a18cd1", "#fbc2eb"], ["#fff1eb", "#ace0f9"],
+              ["#d4fc79", "#96e6a1"], ["#a1c4fd", "#c2e9fb"],
+              ["#a8edea", "#fed6e3"], ["#9890e3", "#b1f4cf"],
             ],
           },
         },
@@ -445,8 +389,6 @@
     <!-- customize body -->
 
     <!-- START: 为数据中心信息添加的代码 -->
-
-    <!-- 1. 用于后续插入的HTML结构 -->
     <template id="datacenter-template">
       <div id="datacenter-info">
         <h4>数据中心</h4>
@@ -454,27 +396,26 @@
             <thead>
                 <tr>
                     <th>服务</th>
-                    <th>CF代码</th>
+                    <th>CF Colo</th>
                     <th>位置</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Main Site</td>
-                    <td id="main-site-colo">查询中...</td>
-                    <td id="main-site-loc">查询中...</td>
+                    <td>Main Site (oplist.022928.xyz)</td>
+                    <td id="main-site-colo"></td>
+                    <td id="main-site-loc"></td>
                 </tr>
                 <tr>
-                    <td>R2 Storage</td>
-                    <td id="r2-storage-colo">查询中...</td>
-                    <td id="r2-storage-loc">查询中...</td>
+                    <td>R2 Storage (fast-r2.022928.xyz)</td>
+                    <td id="r2-storage-colo"></td>
+                    <td id="r2-storage-loc"></td>
                 </tr>
             </tbody>
         </table>
       </div>
     </template>
     
-    <!-- 2. 适配明暗主题的CSS样式 -->
     <style>
       #datacenter-info {
         text-align: center;
@@ -486,59 +427,94 @@
         margin: 10px auto 0;
         border-collapse: collapse;
         width: 90%;
-        max-width: 500px;
+        max-width: 600px;
         background-color: transparent;
         border-radius: 8px;
         overflow: hidden; 
       }
       #datacenter-info-table th, 
       #datacenter-info-table td {
-        padding: 10px;
+        padding: 8px;
         border: 1px solid;
+        vertical-align: middle;
       }
       #datacenter-info-table th {
         font-weight: bold;
       }
     
       /* 浅色模式 */
-      .hope-ui-light #datacenter-info {
-        color: rgba(0, 0, 0, 0.7);
-      }
+      .hope-ui-light #datacenter-info { color: rgba(0, 0, 0, 0.7); }
       .hope-ui-light #datacenter-info-table th,
-      .hope-ui-light #datacenter-info-table td {
-        border-color: rgba(0, 0, 0, 0.15);
-      }
-      .hope-ui-light #datacenter-info-table thead {
-        background-color: rgba(255, 255, 255, 0.3);
-      }
+      .hope-ui-light #datacenter-info-table td { border-color: rgba(0, 0, 0, 0.15); }
+      .hope-ui-light #datacenter-info-table thead { background-color: rgba(255, 255, 255, 0.3); }
     
       /* 深色模式 */
-      .hope-ui-dark #datacenter-info {
-        color: rgba(255, 255, 255, 0.8);
-      }
+      .hope-ui-dark #datacenter-info { color: rgba(255, 255, 255, 0.8); }
       .hope-ui-dark #datacenter-info-table th,
-      .hope-ui-dark #datacenter-info-table td {
-        border-color: rgba(255, 255, 255, 0.2);
-      }
-      .hope-ui-dark #datacenter-info-table thead {
-        background-color: rgba(0, 0, 0, 0.2);
-      }
+      .hope-ui-dark #datacenter-info-table td { border-color: rgba(255, 255, 255, 0.2); }
+      .hope-ui-dark #datacenter-info-table thead { background-color: rgba(0, 0, 0, 0.2); }
     </style>
     
-    <!-- 3. 获取数据并动态插入HTML的JavaScript -->
     <script>
       (function() {
-        // 从 /cdn-cgi/trace 响应中解析 colo
+        // --- SVG徽章生成器 ---
+
+        // 辅助函数：精确测量文本宽度
+        const getTextWidth = (text, font = "11px Verdana,Geneva,DejaVu Sans,sans-serif") => {
+            const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+            const context = canvas.getContext("2d");
+            context.font = font;
+            const metrics = context.measureText(text);
+            return metrics.width;
+        };
+
+        // 主函数：创建SVG徽章
+        const createBadgeSVG = (label, value, labelColor = '#555', valueColor = '#9b90c2') => {
+            const paddingX = 10;
+            const labelWidth = Math.round(getTextWidth(label)) + paddingX;
+            const valueWidth = Math.round(getTextWidth(value)) + paddingX;
+            const totalWidth = labelWidth + valueWidth;
+
+            // 使用模板字符串构建SVG
+            return `
+              <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20" role="img" aria-label="${label}: ${value}">
+                <title>${label}: ${value}</title>
+                <linearGradient id="s" x2="0" y2="100%">
+                  <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+                  <stop offset="1" stop-opacity=".1"/>
+                </linearGradient>
+                <clipPath id="r">
+                  <rect width="${totalWidth}" height="20" rx="3" fill="#fff"/>
+                </clipPath>
+                <g clip-path="url(#r)">
+                  <rect width="${labelWidth}" height="20" fill="${labelColor}"/>
+                  <rect x="${labelWidth}" width="${valueWidth}" height="20" fill="${valueColor}"/>
+                  <rect width="${totalWidth}" height="20" fill="url(#s)"/>
+                </g>
+                <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="11">
+                  <text aria-hidden="true" x="${labelWidth / 2}" y="15" fill="#010101" fill-opacity=".3" transform="scale(1)" textLength="${labelWidth - paddingX}">${label}</text>
+                  <text x="${labelWidth / 2}" y="14" transform="scale(1)" textLength="${labelWidth - paddingX}">${label}</text>
+                  <text aria-hidden="true" x="${labelWidth + valueWidth / 2}" y="15" fill="#010101" fill-opacity=".3" transform="scale(1)" textLength="${valueWidth - paddingX}">${value}</text>
+                  <text x="${labelWidth + valueWidth / 2}" y="14" transform="scale(1)" textLength="${valueWidth - paddingX}">${value}</text>
+                </g>
+              </svg>`;
+        };
+
+        // --- 数据获取与渲染 ---
+
         const parseColo = (traceText) => {
           const line = traceText.split('\n').find(line => line.startsWith('colo='));
           return line ? line.split('=')[1] : null;
         };
     
-        // 异步获取单个数据中心的信息
         const fetchDatacenterInfo = async (domain, coloElId, locElId) => {
           const coloEl = document.getElementById(coloElId);
           const locEl = document.getElementById(locElId);
-    
+          
+          // 设置加载状态的徽章
+          coloEl.innerHTML = createBadgeSVG('CF Colo', '...', '#555', '#9f9f9f');
+          locEl.innerHTML = createBadgeSVG('Location', '...', '#555', '#9f9f9f');
+
           try {
             const traceResponse = await fetch(`https://${domain}/cdn-cgi/trace`);
             if (!traceResponse.ok) throw new Error('Trace fetch failed');
@@ -546,63 +522,49 @@
             const colo = parseColo(traceText);
     
             if (colo) {
-              coloEl.textContent = colo;
+              coloEl.innerHTML = createBadgeSVG('CF Colo', colo, '#555', '#33a3dc');
               try {
                 const locResponse = await fetch(`https://iata.isteed.cc/zh/${colo}`);
                 if (!locResponse.ok) throw new Error('Location fetch failed');
                 const location = await locResponse.text();
-                locEl.textContent = location || '未知';
+                locEl.innerHTML = createBadgeSVG('Location', location || '未知', '#555', '#33a3dc');
               } catch (locError) {
                 console.error(`Error fetching location for ${colo}:`, locError);
-                locEl.textContent = '查询位置失败';
+                locEl.innerHTML = createBadgeSVG('Location', '查询失败', '#555', '#e05d44');
               }
             } else {
-              coloEl.textContent = '获取失败';
-              locEl.textContent = 'N/A';
+              throw new Error('Colo not found in trace');
             }
           } catch (traceError) {
             console.error(`Error fetching trace for ${domain}:`, traceError);
-            coloEl.textContent = '获取失败';
-            locEl.textContent = 'N/A';
+            coloEl.innerHTML = createBadgeSVG('CF Colo', '获取失败', '#555', '#e05d44');
+            locEl.innerHTML = createBadgeSVG('Location', 'N/A', '#555', '#e05d44');
           }
         };
     
-        // 初始化并执行所有数据获取任务
         const initializeDatacenterInfo = () => {
           const sites = [
             { domain: 'oplist.022928.xyz', coloId: 'main-site-colo', locId: 'main-site-loc' },
             { domain: 'fast-r2.022928.xyz', coloId: 'r2-storage-colo', locId: 'r2-storage-loc' }
           ];
-          Promise.all(sites.map(site => fetchDatacenterInfo(site.domain, site.coloId, site.locId)));
+          sites.forEach(site => fetchDatacenterInfo(site.domain, site.coloId, site.locId));
         };
     
-        // 使用 MutationObserver 监视DOM变化，等待页脚加载
         const observer = new MutationObserver((mutations, obs) => {
           const footer = document.querySelector(".footer");
           if (footer) {
             const template = document.getElementById('datacenter-template');
             const datacenterContent = template.content.cloneNode(true);
-            
-            // 将模板内容插入到页脚之后
             footer.parentNode.insertBefore(datacenterContent, footer.nextSibling);
-    
-            // 开始获取数据
             initializeDatacenterInfo();
-    
-            // 任务完成，停止监视
             obs.disconnect();
           }
         });
     
-        // 启动监视
-        observer.observe(document.body, {
-          childList: true,
-          subtree: true
-        });
+        observer.observe(document.body, { childList: true, subtree: true });
       })();
     </script>
     
     <!-- END: 添加的代码结束 -->
-    
   </body>
 </html>
