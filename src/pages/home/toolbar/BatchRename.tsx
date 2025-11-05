@@ -305,7 +305,10 @@ export const BatchRename = () => {
               onClick={() => submit()}
               disabled={
                 type() === "2" || type() === "3"
-                  ? !srcName() || !newName() || !!validationErrorSrc() || !!validationErrorNew()
+                  ? !srcName() ||
+                    !newName() ||
+                    !!validationErrorSrc() ||
+                    !!validationErrorNew()
                   : !srcName()
               }
             >
