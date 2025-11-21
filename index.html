@@ -103,17 +103,14 @@
   }, 150);
 </script>
     <style>
-      /* --- 全局背景图 (移除此处的背景模糊) --- */
-      /* 白天背景图 */
+      /* --- 全局背景图 --- */
       .hope-ui-light {
         background-image: url("https://t.alcy.cc/ycy") !important;
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
         background-position-x: center;
-        /* backdrop-filter: blur(3px);  <-- 已从此位置移除 */
       }
-      /* 夜间背景图 */
       .hope-ui-dark {
         background-image:
           linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
@@ -124,65 +121,34 @@
         background-position-x: center;
       }
 
-      /* --- 主要UI面板玻璃效果 (新增或修正 backdrop-filter) --- */
-      /* 定义一个通用的玻璃效果类 */
+      /* --- 玻璃效果 --- */
       .glass-effect-light {
         background-color: rgba(255, 255, 255, 0.5) !important;
         backdrop-filter: blur(5px) !important;
-        -webkit-backdrop-filter: blur(5px) !important; /* 兼容Safari */
+        -webkit-backdrop-filter: blur(5px) !important;
       }
       .glass-effect-dark {
         background-color: rgb(0 0 0 / 50%) !important;
         backdrop-filter: blur(5px) !important;
-        -webkit-backdrop-filter: blur(5px) !important; /* 兼容Safari */
+        -webkit-backdrop-filter: blur(5px) !important;
       }
       
-      /* 将效果应用到具体元素 */
-      /* 主列表 */
-      .hope-ui-light .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-igScBhH-css {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        backdrop-filter: blur(5px) !important;
-      }
-      .hope-ui-dark .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-iigjoxS-css {
-        background-color: rgb(0 0 0 / 50%) !important;
-        backdrop-filter: blur(5px) !important;
-      }
-      /* README区域 */
-      .hope-ui-light .hope-c-PJLV.hope-c-PJLV-ikSuVsl-css {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        backdrop-filter: blur(5px) !important;
-      }
-      .hope-ui-dark .hope-c-PJLV.hope-c-PJLV-iiuDLME-css {
-        background-color: rgb(0 0 0 / 50%) !important;
-        backdrop-filter: blur(5px) !important;
-      }
-      /* 左侧侧边栏 */
-      .hope-ui-light .hope-c-PJLV-ieGWMbI-css {
-        background: rgba(255, 255, 255, 0.3) !important;
-        backdrop-filter: blur(5px) !important;
-      }
-      .hope-ui-dark .hope-c-PJLV-ieGWMbI-css {
-        background-color: rgb(0 0 0 / 50%) !important;
-        backdrop-filter: blur(5px) !important;
-      }
-      /* 正常情况下的导航条 */
-      .hope-ui-light .hope-c-PJLV-idaeksS-css {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        backdrop-filter: blur(5px) !important;
-        border-radius: 10px !important;
-      }
-      .hope-ui-dark .hope-c-PJLV-idaeksS-css {
-        background-color: rgb(0 0 0 / 50%) !important;
-        backdrop-filter: blur(5px) !important;
-        border-radius: 10px !important;
-      }
-      /* 滚动时吸顶的导航条 */
+      /* 列表与容器背景 */
+      .hope-ui-light .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-igScBhH-css,
+      .hope-ui-light .hope-c-PJLV.hope-c-PJLV-ikSuVsl-css,
+      .hope-ui-light .hope-c-PJLV-ieGWMbI-css,
+      .hope-ui-light .hope-c-PJLV-idaeksS-css,
       .hope-ui-light .hope-c-PJLV-icKsjdm-css,
       .hope-ui-light .hope-c-hrsMRY {
         background-color: rgba(255, 255, 255, 0.5) !important;
         backdrop-filter: blur(5px) !important;
         border-radius: 10px !important;
       }
+      
+      .hope-ui-dark .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-iigjoxS-css,
+      .hope-ui-dark .hope-c-PJLV.hope-c-PJLV-iiuDLME-css,
+      .hope-ui-dark .hope-c-PJLV-ieGWMbI-css,
+      .hope-ui-dark .hope-c-PJLV-idaeksS-css,
       .hope-ui-dark .hope-c-PJLV-icKsjdm-css,
       .hope-ui-dark .hope-c-hrsMRY {
         background-color: rgb(0 0 0 / 50%) !important;
@@ -190,35 +156,27 @@
         border-radius: 10px !important;
       }
 
-      /* --- 其他UI元素透明度调整 --- */
-      /* 完全透明的顶栏容器，让导航条的模糊效果透出来 */
       .hope-c-PJLV-ikaMhsQ-css,
-      .hope-c-PJLV-icWrYmg-css {
-        background: transparent !important;
-      }
-      /* 移除导航条吸顶时的伪元素阴影 */
+      .hope-c-PJLV-icWrYmg-css,
       .hope-c-PJLV-icKsjdm-css::after,
       .hope-c-PJLV-ifdXShc-css::after {
         background: transparent !important;
       }
 
-      /* 右上角按钮 */
-      .hope-ui-light .hope-c-ivMHWx-hZistB-cv.hope-icon-button { background-color: rgba(255, 255, 255, 0.3) !important; }
-      .hope-ui-dark .hope-c-ivMHWx-hZistB-cv.hope-icon-button { background-color: rgb(0 0 0 / 10%) !important; }
-
-      /* 右下角工具栏按钮 */
+      /* 按钮背景 */
+      .hope-ui-light .hope-c-ivMHWx-hZistB-cv.hope-icon-button,
+      .hope-ui-light .hope-c-PJLV-ihVEsOa-css { background-color: rgba(255, 255, 255, 0.3) !important; }
+      .hope-ui-dark .hope-c-ivMHWx-hZistB-cv.hope-icon-button,
+      .hope-ui-dark .hope-c-PJLV-ihVEsOa-css { background-color: rgb(0 0 0 / 10%) !important; }
+      
       .hope-ui-light .hope-c-PJLV-ijgzmFG-css { background-color: rgba(255, 255, 255, 0.5) !important; }
       .hope-ui-dark .hope-c-PJLV-ijgzmFG-css { background-color: rgb(0 0 0 / 50%) !important; }
-
-      /* 返回顶部按钮 */
-      .hope-ui-light .hope-c-PJLV-ihVEsOa-css { background: rgba(255, 255, 255, 0.3) !important; }
-      .hope-ui-dark .hope-c-PJLV-ihVEsOa-css { background-color: rgb(0 0 0 / 50%) !important; }
 
       /* 代码块 */
       .hope-ui-light pre { background-color: rgba(255, 255, 255, 0.1) !important; }
       .hope-ui-dark pre { background-color: transparent !important; }
 
-      /* --- 搜索框玻璃效果 (这个之前已经有了, 保持即可) --- */
+      /* 搜索框 */
       .hope-ui-light .hope-c-PJLV-iiBaxsN-css,
       .hope-ui-light .hope-c-kvTTWD-hYRNAb-variant-filled,
       .hope-ui-light .hope-c-PJLV-ikEIIxw-css {
@@ -268,6 +226,16 @@
         background-color: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(5px);
       }
+
+      /* --- 修复徽章文字渲染溢出 --- */
+      /* 强制SVG内部文字使用标准无衬线字体，以匹配Canvas计算的宽度 */
+      /* 必须使用 !important 覆盖全局的 LXGW WenKai 设置 */
+      .custom-footer-badges svg text {
+        font-family: Verdana, Geneva, DejaVu Sans, sans-serif !important;
+        font-weight: bold !important;
+        font-size: 11px !important;
+        text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+      }
     </style>
     <title>Loading...</title>
     <script>
@@ -297,19 +265,25 @@
     <!-- START: 数据中心徽章注入脚本 -->
     <script>
       (function() {
-        // --- SVG徽章生成器 (根据文本内容动态计算宽度) ---
-        const getTextWidth = (text, font = "bold 11px Verdana,Geneva,DejaVu Sans,sans-serif") => {
+        // --- SVG徽章生成器 ---
+        // 使用与 CSS 中 .custom-footer-badges svg text 完全一致的字体定义进行测量
+        const FONT_FAMILY = "bold 11px Verdana,Geneva,DejaVu Sans,sans-serif";
+        
+        const getTextWidth = (text) => {
             const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
             const context = canvas.getContext("2d");
-            context.font = font;
-            return context.measureText(text).width + 5;
+            context.font = FONT_FAMILY;
+            // 使用 Math.ceil 向上取整，并额外增加 2px 缓冲，确保不溢出
+            return Math.ceil(context.measureText(text).width) + 2;
         };
 
         const createBadgeSVG = (label, value, valueColor = '#4c1') => {
             const labelColor = '#555';
-            const paddingX = 14;
-            const labelWidth = Math.round(getTextWidth(label)) + paddingX;
-            const valueWidth = Math.round(getTextWidth(value)) + paddingX;
+            // 增加 Padding 以避免文字紧贴边缘
+            const paddingX = 16; 
+            
+            const labelWidth = getTextWidth(label) + paddingX;
+            const valueWidth = getTextWidth(value) + paddingX;
             const totalWidth = labelWidth + valueWidth;
 
             return `
@@ -354,6 +328,7 @@
                 console.error(`Error fetching location for ${colo}:`, locError);
                 location = '查询失败';
               }
+              // 成功获取后重新生成SVG，宽度会自动重新计算
               badgeContainerEl.innerHTML = createBadgeSVG(siteLabel, `${colo} ${location}`, '#4c1');
             } else {
               throw new Error('Colo not found');
