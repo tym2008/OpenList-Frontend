@@ -121,25 +121,14 @@
         background-position-x: center;
       }
 
-      /* --- 玻璃效果 --- */
-      .glass-effect-light {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        backdrop-filter: blur(5px) !important;
-        -webkit-backdrop-filter: blur(5px) !important;
-      }
-      .glass-effect-dark {
-        background-color: rgb(0 0 0 / 50%) !important;
-        backdrop-filter: blur(5px) !important;
-        -webkit-backdrop-filter: blur(5px) !important;
-      }
-      
-      /* 列表与容器背景 */
+      /* --- UI 玻璃效果 --- */
       .hope-ui-light .obj-box.hope-stack.hope-c-dhzjXW.hope-c-PJLV.hope-c-PJLV-igScBhH-css,
       .hope-ui-light .hope-c-PJLV.hope-c-PJLV-ikSuVsl-css,
       .hope-ui-light .hope-c-PJLV-ieGWMbI-css,
       .hope-ui-light .hope-c-PJLV-idaeksS-css,
       .hope-ui-light .hope-c-PJLV-icKsjdm-css,
-      .hope-ui-light .hope-c-hrsMRY {
+      .hope-ui-light .hope-c-hrsMRY,
+      .glass-effect-light {
         background-color: rgba(255, 255, 255, 0.5) !important;
         backdrop-filter: blur(5px) !important;
         border-radius: 10px !important;
@@ -150,7 +139,8 @@
       .hope-ui-dark .hope-c-PJLV-ieGWMbI-css,
       .hope-ui-dark .hope-c-PJLV-idaeksS-css,
       .hope-ui-dark .hope-c-PJLV-icKsjdm-css,
-      .hope-ui-dark .hope-c-hrsMRY {
+      .hope-ui-dark .hope-c-hrsMRY,
+      .glass-effect-dark {
         background-color: rgb(0 0 0 / 50%) !important;
         backdrop-filter: blur(5px) !important;
         border-radius: 10px !important;
@@ -194,7 +184,7 @@
          padding: var(--hope-space-1) !important;
       }
       
-      /* --- 全局字体与布局 --- */
+      /* --- 全局字体 --- */
       * {
         font-family: LXGW WenKai;
         font-weight: bold;
@@ -203,7 +193,7 @@
       .name-box.name { white-space: unset !important; overflow: unset !important; }
       .left-toolbar-box, .hope-close-button { display: none !important; }
 
-      /* --- 数据中心徽章容器样式 --- */
+      /* --- 徽章容器 --- */
       .custom-footer-badges {
         display: flex;
         justify-content: center;
@@ -227,14 +217,41 @@
         backdrop-filter: blur(5px);
       }
 
-      /* --- 修复徽章文字渲染溢出 --- */
-      /* 强制SVG内部文字使用标准无衬线字体，以匹配Canvas计算的宽度 */
-      /* 必须使用 !important 覆盖全局的 LXGW WenKai 设置 */
-      .custom-footer-badges svg text {
+      /* --- 新增：CSS纯代码徽章样式 (完美解决溢出问题) --- */
+      .badge-flex {
+        display: inline-flex;
+        align-items: stretch;
+        border-radius: 3px;
+        overflow: hidden;
+        /* 强制覆盖全局字体，使用标准字体以对齐 */
         font-family: Verdana, Geneva, DejaVu Sans, sans-serif !important;
-        font-weight: bold !important;
-        font-size: 11px !important;
+        font-size: 11px;
+        font-weight: bold;
+        height: 20px;
+        line-height: 20px;
+        box-shadow: 0 0 1px rgba(0,0,0,0.1);
         text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+      }
+      
+      .badge-label {
+        background-color: #555;
+        color: #fff;
+        padding: 0 6px;
+        display: flex;
+        align-items: center;
+        /* 模拟 SVG 的微弱光泽 */
+        background-image: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+        white-space: nowrap;
+      }
+      
+      .badge-value {
+        color: #fff;
+        padding: 0 6px;
+        display: flex;
+        align-items: center;
+        /* 模拟 SVG 的微弱光泽 */
+        background-image: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+        white-space: nowrap; /* 防止文字换行 */
       }
     </style>
     <title>Loading...</title>
@@ -249,7 +266,7 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <!-- 延迟加载的自定义内容 (可选) -->
+    <!-- 延迟加载的自定义内容 -->
     <div id="customize" style="display: none"></div>
     <script>
       let custInterval = setInterval(() => {
@@ -265,44 +282,13 @@
     <!-- START: 数据中心徽章注入脚本 -->
     <script>
       (function() {
-        // --- SVG徽章生成器 ---
-        // 使用与 CSS 中 .custom-footer-badges svg text 完全一致的字体定义进行测量
-        const FONT_FAMILY = "bold 11px Verdana,Geneva,DejaVu Sans,sans-serif";
-        
-        const getTextWidth = (text) => {
-            const canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
-            const context = canvas.getContext("2d");
-            context.font = FONT_FAMILY;
-            // 使用 Math.ceil 向上取整，并额外增加 2px 缓冲，确保不溢出
-            return Math.ceil(context.measureText(text).width) + 2;
-        };
-
-        const createBadgeSVG = (label, value, valueColor = '#4c1') => {
-            const labelColor = '#555';
-            // 增加 Padding 以避免文字紧贴边缘
-            const paddingX = 16; 
-            
-            const labelWidth = getTextWidth(label) + paddingX;
-            const valueWidth = getTextWidth(value) + paddingX;
-            const totalWidth = labelWidth + valueWidth;
-
+        // --- CSS徽章生成器 (不需要Canvas计算，纯HTML自动适配) ---
+        const createBadgeHTML = (label, value, valueColor = '#4c1') => {
             return `
-              <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20" role="img" aria-label="${label}: ${value}">
-                <title>${label}: ${value}</title>
-                <linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>
-                <clipPath id="r"><rect width="${totalWidth}" height="20" rx="3" fill="#fff"/></clipPath>
-                <g clip-path="url(#r)">
-                  <rect width="${labelWidth}" height="20" fill="${labelColor}"/>
-                  <rect x="${labelWidth}" width="${valueWidth}" height="20" fill="${valueColor}"/>
-                  <rect width="${totalWidth}" height="20" fill="url(#s)"/>
-                </g>
-                <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-weight="bold" text-rendering="geometricPrecision" font-size="11">
-                  <text x="${labelWidth / 2}" y="15" fill="#010101" fill-opacity=".3">${label}</text>
-                  <text x="${labelWidth / 2}" y="14">${label}</text>
-                  <text x="${labelWidth + valueWidth / 2}" y="15" fill="#010101" fill-opacity=".3">${value}</text>
-                  <text x="${labelWidth + valueWidth / 2}" y="14">${value}</text>
-                </g>
-              </svg>`;
+              <div class="badge-flex" role="img" aria-label="${label}: ${value}">
+                <div class="badge-label">${label}</div>
+                <div class="badge-value" style="background-color: ${valueColor}">${value}</div>
+              </div>`;
         };
 
         // --- 异步获取数据并更新徽章 ---
@@ -312,7 +298,8 @@
         };
     
         const fetchBadgeInfo = async (siteLabel, domain, badgeContainerEl) => {
-          badgeContainerEl.innerHTML = createBadgeSVG(siteLabel, '查询中...', '#9f9f9f');
+          // 初始状态
+          badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, '查询中...', '#9f9f9f');
           try {
             const traceResponse = await fetch(`https://${domain}/cdn-cgi/trace`);
             if (!traceResponse.ok) throw new Error('Trace fetch failed');
@@ -328,18 +315,18 @@
                 console.error(`Error fetching location for ${colo}:`, locError);
                 location = '查询失败';
               }
-              // 成功获取后重新生成SVG，宽度会自动重新计算
-              badgeContainerEl.innerHTML = createBadgeSVG(siteLabel, `${colo} ${location}`, '#4c1');
+              // 更新为结果，背景颜色为绿色，HTML会自动撑开宽度
+              badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, `${colo} ${location}`, '#4c1');
             } else {
               throw new Error('Colo not found');
             }
           } catch (error) {
             console.error(`Error fetching data for ${domain}:`, error);
-            badgeContainerEl.innerHTML = createBadgeSVG(siteLabel, '获取失败', '#e05d44');
+            badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, '获取失败', '#e05d44');
           }
         };
     
-        // --- 主逻辑：等待页脚出现，然后注入徽章容器 ---
+        // --- 主逻辑 ---
         const observer = new MutationObserver((mutations, obs) => {
           const originalFooter = document.querySelector(".footer");
           if (originalFooter && !document.querySelector('.custom-footer-badges')) {
@@ -358,9 +345,9 @@
             originalFooter.parentNode.insertBefore(badgeContainer, originalFooter);
             
             sites.forEach((site) => {
-              const span = document.createElement('span');
-              badgeContainer.appendChild(span);
-              fetchBadgeInfo(site.label, site.domain, span);
+              const wrapper = document.createElement('div'); // 使用div包裹防止flex布局错乱
+              badgeContainer.appendChild(wrapper);
+              fetchBadgeInfo(site.label, site.domain, wrapper);
             });
 
             obs.disconnect();
