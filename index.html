@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en" translate="no">
-   <head>
+  <head>
     <!-- customize head -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="cd9b123a-76fb-4fa0-b054-0ea1cb687311"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="referrer" content="same-origin" />
@@ -17,345 +18,379 @@
       type="image/ico"
       href="https://res.oplist.org/logo/logo.svg"
     />
-      <!-- v3 -->
 
-<!-- 引入自定义字体 -->
-<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/lxgwwenkai-regular.min.css">
-
-<style>
-    /* 移除原生视频控件 */
-    video::-webkit-media-controls {
-        display: none;
-    }
-
-    /* 设置背景图片样式 */
-    body {
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center;
-    }
-
-    /* 在此处的url()里修改背景图片地址 */
-    /* 加了个深色遮罩，爱护你的眼睛 */
-    body.hope-ui-dark {
-        background-color: rgb(32, 36, 37);
-        background-image: linear-gradient(rgba(32, 36, 37, 0.7), rgba(32, 36, 37, 0.7)), url('https://t.alcy.cc/moez');
-    }
-
-    /* 在此处的url()里修改背景图片地址 */
-    body.hope-ui-light {
-        background-image: url('https://t.alcy.cc/moez');
-    }
-
-    /* 统一站点公告的样式 */
-    .hope-ui-light .hope-c-PJLV-ikJQsXT-css {
-        background: rgba(255, 255, 255, 0.8) !important;
-        backdrop-filter: blur(0) !important;
-    }
-
-    .hope-ui-dark .hope-c-PJLV-ikJQsXT-css {
-        background: rgb(32, 36, 37) !important;
-        backdrop-filter: blur(0) !important;
-    }
-
-    /* 自定义字体 */
-    * {
-        font-family: "LXGW WenKai", sans-serif;
-    }
-</style>
-
-<!-- 移植的徽章样式 -->
-<style>
-    /* --- 徽章容器 --- */
-    .custom-footer-badges {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 20px 15px;
-      margin: 20px auto;
-      max-width: 90%;
-      width: fit-content;
-      min-width: 300px;
-      border-radius: 12px;
-      transition: background-color 0.3s ease;
-    }
-    .hope-ui-light .custom-footer-badges {
-      background-color: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(5px);
-    }
-    .hope-ui-dark .custom-footer-badges {
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
-    }
-
-    /* --- 新增：CSS纯代码徽章样式 (完美解决溢出问题) --- */
-    .badge-flex {
-      display: inline-flex;
-      align-items: stretch;
-      border-radius: 3px;
-      overflow: hidden;
-      /* 强制覆盖全局字体，使用标准字体以对齐，防止 LXGW 导致徽章错位 */
-      font-family: Verdana, Geneva, DejaVu Sans, sans-serif !important;
-      font-size: 11px;
-      font-weight: bold;
-      height: 20px;
-      line-height: 20px;
-      box-shadow: 0 0 1px rgba(0,0,0,0.1);
-      text-shadow: 0 1px 0 rgba(0,0,0,0.1);
-    }
+    <!-- ================================================================= -->
+    <!-- START: 用户指定的美化配置 (v3 Custom Header) -->
+    <!-- ================================================================= -->
     
-    .badge-label {
-      background-color: #555;
-      color: #fff;
-      padding: 0 6px;
-      display: flex;
-      align-items: center;
-      /* 模拟 SVG 的微弱光泽 */
-      background-image: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
-      white-space: nowrap;
-    }
+    <!-- 引入自定义字体 -->
+    <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/lxgwwenkai-regular.min.css">
+    <!-- 引入 FontAwesome (用于底部图标) -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        /* 移除原生视频控件 */
+        video::-webkit-media-controls {
+            display: none;
+        }
+
+        /* 设置背景图片样式 */
+        body {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* 深色模式背景 */
+        body.hope-ui-dark {
+            background-color: rgb(32, 36, 37);
+            background-image: linear-gradient(rgba(32, 36, 37, 0.7), rgba(32, 36, 37, 0.7)), url('https://t.alcy.cc/moez');
+        }
+
+        /* 浅色模式背景 */
+        body.hope-ui-light {
+            background-image: url('https://t.alcy.cc/moez');
+        }
+
+        /* 统一站点公告的样式 */
+        .hope-ui-light .hope-c-PJLV-ikJQsXT-css {
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(0) !important;
+        }
+
+        .hope-ui-dark .hope-c-PJLV-ikJQsXT-css {
+            background: rgb(32, 36, 37) !important;
+            backdrop-filter: blur(0) !important;
+        }
+
+        /* 自定义字体 */
+        * {
+            font-family: "LXGW WenKai", sans-serif;
+        }
+
+        /* 
+           -------------------------------------------------------
+           FIX: 右下角侧边菜单样式修复 (透明 + 层级修复) 
+           -------------------------------------------------------
+        */
+        .hope-c-PJLV-ijgzmFG-css {
+            background-color: rgba(255, 255, 255, 0.5)!important;
+            backdrop-filter: blur(10px);
+            z-index: 10000 !important; 
+        }
+        .hope-ui-dark .hope-c-PJLV-ijgzmFG-css {
+            background-color: rgba(0, 0, 0, 0.5)!important;
+        }
+    </style>
+
+    <script src="https://s4.zstatic.net/ajax/libs/js-polyfills/0.1.43/polyfill.min.js?features=String.prototype.replaceAll"></script>
     
-    .badge-value {
-      color: #fff;
-      padding: 0 6px;
-      display: flex;
-      align-items: center;
-      /* 模拟 SVG 的微弱光泽 */
-      background-image: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
-      white-space: nowrap; /* 防止文字换行 */
-    }
-</style>
+    <!-- ================================================================= -->
+    <!-- END: 新版美化配置 -->
+    <!-- ================================================================= -->
 
+    <!-- ================================================================= -->
+    <!-- START: 底部 & 徽章样式 -->
+    <!-- ================================================================= -->
+    <style>
+      .dibu {
+        border-top: 0px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        color: #ffffff!important;
+        text-shadow: 2px 2px 5px #000000;
+        line-height: 30px;
+        font-weight: bold;
+        z-index: 10; 
+        pointer-events: none; /* 让鼠标穿透空白区域 */
+      }
+      .dibu a, .dibu span, .dibu div {
+        pointer-events: auto;
+      }
+      .nav-item {
+        font-size: 14px;
+        margin: 0 5px;
+      }
+      .nav-item a {
+        color: #ffffff!important;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .footer { display: none!important; }
 
-<script
-    src="https://s4.zstatic.net/ajax/libs/js-polyfills/0.1.43/polyfill.min.js?features=String.prototype.replaceAll"></script>
-    <title>Loading...</title>
+      /* 
+         徽章样式修复：
+         添加 !important 以防止美化脚本(Beautifier JS)覆盖背景颜色
+      */
+      .badge-flex {
+        display: inline-flex;
+        align-items: stretch;
+        border-radius: 3px;
+        overflow: hidden;
+        font-family: sans-serif !important;
+        font-size: 11px;
+        height: 18px;
+        line-height: 18px;
+        margin: 0 2px;
+        vertical-align: middle;
+        box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      }
+      .badge-label { 
+        background-color: #555 !important; /* 强制深灰色背景 */
+        color: #fff !important; 
+        padding: 0 5px; 
+      }
+      .badge-value { 
+        color: #fff !important; 
+        padding: 0 5px; 
+      }
+    </style>
+    <!-- ================================================================= -->
+    <!-- END: 底部样式 -->
+    <!-- ================================================================= -->
+
+    <title>OpenList</title>
     <script>
       window.OPENLIST_CONFIG = {
-        cdn: undefined,
-        base_path: undefined,
-        api: undefined,
-        main_color: undefined,
+        cdn: undefined, base_path: undefined, api: undefined, main_color: undefined,
       }
       window.__dynamic_base__ = window.OPENLIST_CONFIG.cdn || ""
     </script>
-    <!-- v5-login -->
-
-<!-- 修正部分区域的透明 -->
-<style>
-    .hope-ui-light,
-    .hope-ui-dark {
-        --hope-colors-background: transparent;
-    }
-</style>
-
-<!-- 登录界面优化 -->
-<style>
-    .hope-c-PJLV-ifjOQLV-css {
-        box-shadow: var(--hope-shadows-lg);
-    }
-
-    .hope-c-PJLV-ihWgyFw-css,
-    .hope-c-PJLV-ibiABng-css {
-        display: none;
-    }
-</style>
-
-<script type="module">
-    // v5-login
-
-    class Beautifier {
-        /**
-            * Beautifier 类用于美化页面背景色
-            * 
-            * 其提供了3个方法：
-            * - observe: 开始监听页面变化并美化背景色
-            * - disconnect: 停止监听页面变化
-            * - undo: 恢复页面背景色到默认状态
-            *
-            * 可以通过window.beautifier访问实例对象
-            * 
-         */
-        static ignoredSelectors = [
-            '.hope-tooltip', // 提示小标签及其装饰
-            '.hope-tooltip__arrow',
-            '.hope-checkbox__control',// 复选框
-            '.hope-modal__overlay', // 模态框遮罩
-            '.hope-select__option', // 下拉选项
-            '.monaco-editor *', // 代码编辑器
-            'button:not(.hope-menu__trigger)', // 除目录外按钮
-            'svg' // SVG 图标
-        ];
-
-        static getSelector(mainSelector) {
-            return `${mainSelector} :not(${Beautifier.ignoredSelectors.join('):not(')})`;
-        }
-
-        static lightSelector = Beautifier.getSelector('.hope-ui-light');
-        static darkSelector = Beautifier.getSelector('.hope-ui-dark');
-
-        static lightBgColor = 'rgba(255, 255, 255, 0.8)';
-        static darkBgColor = 'rgb(32, 36, 37)';
-
-        static specificPrefix = 'rgba(132, 133, 141,';
-
-        constructor() {
-            this.observer = null;
-        }
-
-        /**
-         * @param {'light'|'dark'} theme
-         */
-        #rewriteStyle(theme) {
-            let selector = theme === 'light' ? Beautifier.lightSelector : Beautifier.darkSelector;
-            let bgColor = theme === 'light' ? Beautifier.lightBgColor : Beautifier.darkBgColor;
-
-            document.querySelectorAll(selector).forEach(element => {
-                const computedStyle = getComputedStyle(element);
-
-                if (computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
-                    !computedStyle.backgroundColor.startsWith(Beautifier.specificPrefix)) {
-                    element.style.backgroundColor = bgColor;
-
-                    element.setAttribute('data-beautified', 'true');
-                }
-            });
-        }
-
-        #beautify() {
-            if (!location.pathname.startsWith('/@manage')) {
-                this.#rewriteStyle('light');
-                this.#rewriteStyle('dark');
-            }
-        }
-
-        observe() {
-            this.observer = new MutationObserver(this.#beautify.bind(this));
-            this.observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-
-            this.#beautify();
-        }
-
-        disconnect() {
-            if (this.observer) {
-                this.observer.disconnect();
-            }
-        }
-
-        undo() {
-            this.disconnect();
-
-            document.body.querySelectorAll('[data-beautified]').forEach(element => {
-                element.style.backgroundColor = '';
-
-                element.removeAttribute('data-beautified');
-            });
-        }
-    }
-
-    const beautifier = new Beautifier();
-    window.beautifier = beautifier;
-
-    beautifier.observe();
-</script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <script src="/src/main.tsx" type="module"></script>
-    
-    <!-- START: 数据中心徽章注入脚本 (移植自代码2) -->
-    <script>
-      (function() {
-        // --- CSS徽章生成器 (不需要Canvas计算，纯HTML自动适配) ---
-        const createBadgeHTML = (label, value, valueColor = '#4c1') => {
-            return `
-              <div class="badge-flex" role="img" aria-label="${label}: ${value}">
-                <div class="badge-label">${label}</div>
-                <div class="badge-value" style="background-color: ${valueColor}">${value}</div>
-              </div>`;
-        };
+    <!-- ======================================================= -->
+    <!-- 自定义底部结构 -->
+    <!-- ======================================================= -->
+    <div id="customize" style="display: none;">
+        <center class="dibu">
+            <!-- 节点徽章区域 -->
+            <div id="badges-row" style="margin-bottom: 5px; line-height: 20px;">
+                <span style="font-size:12px; opacity: 0.8;">Loading Nodes...</span>
+            </div>
+            <!-- 链接区域 -->
+            <div style="padding-bottom: 10px;">
+                 <!-- 统计 -->
+                 <span class="nav-item">
+                    <a href="https://cloud.umami.is/share/aeemeFNV9rFq6STN" target="_blank">
+                        <i class="fa fa-line-chart"></i> 统计
+                    </a>
+                 </span>|
+                 
+                 <!-- 状态 -->
+                 <span class="nav-item">
+                    <a href="https://stats.uptimerobot.com/BxOAxgHqkh" target="_blank">
+                        <i class="fa fa-heartbeat"></i> 状态
+                    </a>
+                 </span>|
+                 
+                 <!-- 动态 登录/管理 按钮 -->
+                 <span class="nav-item" id="auth-btn-container">
+                    <!-- JS 填充 -->
+                 </span>|
+                 
+                 <!-- 邮箱 -->
+                 <span class="nav-item">
+                    <a href="mailto:admin@022928.xyz" target="_blank">
+                        <i class="fa fa-envelope"></i> 邮箱
+                    </a>
+                 </span>|
+                 
+                 <!-- 版权 -->
+                 <span class="nav-item">
+                    <a href="https://github.com/520hacker/OpenList" target="_blank">
+                        <i class="fa fa-copyright"></i> OpenList
+                    </a>
+                 </span>
+            </div>
+        </center>
+    </div>
 
-        // --- 异步获取数据并更新徽章 ---
-        const parseColo = (traceText) => {
-          const line = traceText.split('\n').find(line => line.startsWith('colo='));
-          return line ? line.split('=')[1] : null;
-        };
-    
-        const fetchBadgeInfo = async (siteLabel, domain, badgeContainerEl) => {
-          // 初始状态
-          badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, '查询中...', '#9f9f9f');
-          try {
-            const traceResponse = await fetch(`https://${domain}/cdn-cgi/trace`);
-            if (!traceResponse.ok) throw new Error('Trace fetch failed');
-            const traceText = await traceResponse.text();
-            const colo = parseColo(traceText);
-    
-            if (colo) {
-              let location = '未知';
-              try {
-                // 如果您想修改查询API，可以在这里更改
-                const locResponse = await fetch(`https://iata.isteed.cc/zh/${colo}`);
-                if (locResponse.ok) location = await locResponse.text() || '未知';
-              } catch (locError) {
-                console.error(`Error fetching location for ${colo}:`, locError);
-                location = '查询失败';
-              }
-              // 更新为结果，背景颜色为绿色，HTML会自动撑开宽度
-              badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, `${colo} ${location}`, '#4c1');
-            } else {
-              throw new Error('Colo not found');
-            }
-          } catch (error) {
-            console.error(`Error fetching data for ${domain}:`, error);
-            badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, '获取失败', '#e05d44');
-          }
-        };
-    
-        // --- 主逻辑 ---
-        const observer = new MutationObserver((mutations, obs) => {
-          const originalFooter = document.querySelector(".footer");
-          // 确保 footer 存在且还没有插入过徽章
-          if (originalFooter && !document.querySelector('.custom-footer-badges')) {
-            
-            // --- 在这里配置你需要检测的域名 ---
-            const sites = [
-              { label: 'Main Site', domain: 'oplist.022928.xyz' },
-              { label: 'Main API', domain: 'oplist-api.022928.xyz' },
-              { label: 'R2(Bestip)', domain: 'fast-r2.022928.xyz' },
-              { label: 'R2(Source)', domain: 'r2.022928.xyz' },
-              { label: 'SharePoint CDN', domain: 'sharepoint.022928.xyz' }
+    <!-- ================================================================= -->
+    <!-- START: 新版美化脚本 (v5-login Beautifier) -->
+    <!-- ================================================================= -->
+    <style>
+        .hope-ui-light,
+        .hope-ui-dark {
+            --hope-colors-background: transparent;
+        }
+        .hope-c-PJLV-ifjOQLV-css { box-shadow: var(--hope-shadows-lg); }
+        .hope-c-PJLV-ihWgyFw-css, .hope-c-PJLV-ibiABng-css { display: none; }
+    </style>
+
+    <script type="module">
+        // v5-login Beautifier Logic
+        class Beautifier {
+            static ignoredSelectors = [
+                '.hope-tooltip', '.hope-tooltip__arrow', '.hope-checkbox__control',
+                '.hope-modal__overlay', '.hope-select__option', '.monaco-editor *',
+                'button:not(.hope-menu__trigger)', 'svg', 
+                '.dibu', '.dibu *', '.badge-flex', '.badge-flex *', // 忽略底部
+                '.hope-c-PJLV-ijgzmFG-css', '.hope-c-PJLV-ijgzmFG-css *' // 忽略侧边栏
             ];
 
-            const badgeContainer = document.createElement('div');
-            badgeContainer.className = 'custom-footer-badges';
+            static getSelector(mainSelector) {
+                return `${mainSelector} :not(${Beautifier.ignoredSelectors.join('):not(')})`;
+            }
 
-            // 插入到 footer 之前
-            originalFooter.parentNode.insertBefore(badgeContainer, originalFooter);
+            static lightSelector = Beautifier.getSelector('.hope-ui-light');
+            static darkSelector = Beautifier.getSelector('.hope-ui-dark');
+            static lightBgColor = 'rgba(255, 255, 255, 0.8)';
+            static darkBgColor = 'rgb(32, 36, 37)';
+            static specificPrefix = 'rgba(132, 133, 141,';
+
+            constructor() { this.observer = null; }
+
+            #rewriteStyle(theme) {
+                let selector = theme === 'light' ? Beautifier.lightSelector : Beautifier.darkSelector;
+                let bgColor = theme === 'light' ? Beautifier.lightBgColor : Beautifier.darkBgColor;
+                document.querySelectorAll(selector).forEach(element => {
+                    const computedStyle = getComputedStyle(element);
+                    if (computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+                        !computedStyle.backgroundColor.startsWith(Beautifier.specificPrefix)) {
+                        element.style.backgroundColor = bgColor;
+                        element.setAttribute('data-beautified', 'true');
+                    }
+                });
+            }
+
+            #beautify() {
+                if (!location.pathname.startsWith('/@manage')) {
+                    this.#rewriteStyle('light');
+                    this.#rewriteStyle('dark');
+                }
+            }
+
+            observe() {
+                this.observer = new MutationObserver(this.#beautify.bind(this));
+                this.observer.observe(document.body, { childList: true, subtree: true });
+                this.#beautify();
+            }
+
+            disconnect() { if (this.observer) this.observer.disconnect(); }
             
-            sites.forEach((site) => {
-              const wrapper = document.createElement('div'); // 使用div包裹防止flex布局错乱
-              badgeContainer.appendChild(wrapper);
-              fetchBadgeInfo(site.label, site.domain, wrapper);
-            });
+            undo() {
+                this.disconnect();
+                document.body.querySelectorAll('[data-beautified]').forEach(element => {
+                    element.style.backgroundColor = '';
+                    element.removeAttribute('data-beautified');
+                });
+            }
+        }
 
-            obs.disconnect();
-          }
-        });
-    
-        observer.observe(document.body, {
-          childList: true,
-          subtree: true
-        });
-      })();
+        const beautifier = new Beautifier();
+        window.beautifier = beautifier;
+        beautifier.observe();
     </script>
-    <!-- END: 脚本结束 -->
+    <!-- ================================================================= -->
+    <!-- END: 新版美化脚本 -->
+    <!-- ================================================================= -->
+
+    <!-- ================================================================= -->
+    <!-- 逻辑脚本 -->
+    <!-- ================================================================= -->
+    <script>
+        // 1. SPA 无刷新跳转函数
+        window.internalJump = function(path) {
+            history.pushState(null, '', path);
+            window.dispatchEvent(new PopStateEvent('popstate'));
+            window.dispatchEvent(new Event('hashchange'));
+        }
+
+        // 2. 渲染 Auth 按钮
+        function renderAuthButton() {
+            const container = document.getElementById('auth-btn-container');
+            if(!container) return;
+            // 检查 localStorage 中是否有 token
+            const token = localStorage.getItem('token');
+            if (token) {
+                container.innerHTML = `
+                    <a onclick="window.internalJump('/@manage'); return false;" style="cursor: pointer;">
+                        <i class="fa fa-cog"></i> 管理
+                    </a>
+                `;
+            } else {
+                container.innerHTML = `
+                    <a onclick="window.internalJump('/@login'); return false;" style="cursor: pointer;">
+                        <i class="fa fa-sign-in"></i> 登录
+                    </a>
+                `;
+            }
+        }
+
+        // 3. 初始化
+        let interval = setInterval(() => {
+            if (document.querySelector(".footer")) {
+                document.querySelector("#customize").style.display = "";
+                clearInterval(interval);
+                loadBadges();
+                renderAuthButton();
+            }
+        }, 200);
+
+        // 4. 加载徽章
+        function loadBadges() {
+            const container = document.getElementById('badges-row');
+            if (!container) return;
+            
+            const sites = [
+                { label: 'Main', domain: 'oplist.022928.xyz' },
+                { label: 'API', domain: 'oplist-api.022928.xyz' },
+                { label: 'R2(Best)', domain: 'fast-r2.022928.xyz' },
+                { label: 'R2(Src)', domain: 'r2.022928.xyz' },
+                { label: 'SP CDN', domain: 'sharepoint.022928.xyz' }
+            ];
+
+            // 修复关键点：在内联样式中添加 !important
+            const createBadge = (label, text, color) => `
+                <div class="badge-flex">
+                    <div class="badge-label">${label}</div>
+                    <div class="badge-value" style="background-color: ${color} !important;">${text}</div>
+                </div>
+            `;
+
+            const parseColo = (txt) => {
+                const m = txt.match(/colo=([A-Z]+)/);
+                return m ? m[1] : null;
+            };
+
+            container.innerHTML = ''; 
+
+            sites.forEach(async (site) => {
+                const span = document.createElement('span');
+                span.innerHTML = createBadge(site.label, '...', '#999');
+                container.appendChild(span);
+
+                try {
+                    const res = await fetch(`https://${site.domain}/cdn-cgi/trace`);
+                    if(!res.ok) throw new Error();
+                    const txt = await res.text();
+                    const colo = parseColo(txt);
+
+                    if(colo) {
+                        let loc = '';
+                        try {
+                            const lRes = await fetch(`https://iata.isteed.cc/zh/${colo}`);
+                            if(lRes.ok) loc = await lRes.text();
+                        } catch(e){}
+                        const val = loc ? `${colo} ${loc}` : colo;
+                        span.innerHTML = createBadge(site.label, val, '#4c1'); 
+                    } else {
+                        span.innerHTML = createBadge(site.label, 'Unknown', '#e05d44');
+                    }
+                } catch(err) {
+                    span.innerHTML = createBadge(site.label, 'Offline', '#e05d44');
+                }
+            });
+        }
+    </script>
+
+    <script src="/src/main.tsx" type="module"></script>
   </body>
 </html>
