@@ -1,7 +1,22 @@
 <!doctype html>
 <html lang="en" translate="no">
-  <head>
+   <head>
     <!-- customize head -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="same-origin" />
+    <meta name="generator" content="OpenList" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="google" content="notranslate" />
+    <link href="/manifest.json" rel="manifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="OpenList" />
+    <link rel="apple-touch-icon" href="https://res.oplist.org/logo/logo.png" />
+    <link
+      rel="shortcut icon"
+      type="image/ico"
+      href="https://res.oplist.org/logo/logo.svg"
+    />
       <!-- v3 -->
 
 <!-- 引入自定义字体 -->
@@ -50,24 +65,73 @@
     }
 </style>
 
+<!-- 移植的徽章样式 -->
+<style>
+    /* --- 徽章容器 --- */
+    .custom-footer-badges {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 20px 15px;
+      margin: 20px auto;
+      max-width: 90%;
+      width: fit-content;
+      min-width: 300px;
+      border-radius: 12px;
+      transition: background-color 0.3s ease;
+    }
+    .hope-ui-light .custom-footer-badges {
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+    }
+    .hope-ui-dark .custom-footer-badges {
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    /* --- 新增：CSS纯代码徽章样式 (完美解决溢出问题) --- */
+    .badge-flex {
+      display: inline-flex;
+      align-items: stretch;
+      border-radius: 3px;
+      overflow: hidden;
+      /* 强制覆盖全局字体，使用标准字体以对齐，防止 LXGW 导致徽章错位 */
+      font-family: Verdana, Geneva, DejaVu Sans, sans-serif !important;
+      font-size: 11px;
+      font-weight: bold;
+      height: 20px;
+      line-height: 20px;
+      box-shadow: 0 0 1px rgba(0,0,0,0.1);
+      text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+    }
+    
+    .badge-label {
+      background-color: #555;
+      color: #fff;
+      padding: 0 6px;
+      display: flex;
+      align-items: center;
+      /* 模拟 SVG 的微弱光泽 */
+      background-image: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+      white-space: nowrap;
+    }
+    
+    .badge-value {
+      color: #fff;
+      padding: 0 6px;
+      display: flex;
+      align-items: center;
+      /* 模拟 SVG 的微弱光泽 */
+      background-image: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
+      white-space: nowrap; /* 防止文字换行 */
+    }
+</style>
+
 
 <script
     src="https://s4.zstatic.net/ajax/libs/js-polyfills/0.1.43/polyfill.min.js?features=String.prototype.replaceAll"></script>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="referrer" content="same-origin" />
-    <meta name="generator" content="OpenList" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="google" content="notranslate" />
-    <link href="/manifest.json" rel="manifest" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="OpenList" />
-    <link rel="apple-touch-icon" href="https://res.oplist.org/logo/logo.png" />
-    <link
-      rel="shortcut icon"
-      type="image/ico"
-      href="https://res.oplist.org/logo/logo.svg"
-    />
     <title>Loading...</title>
     <script>
       window.OPENLIST_CONFIG = {
@@ -206,6 +270,92 @@
     <div id="root"></div>
 
     <script src="/src/main.tsx" type="module"></script>
-    <!-- customize body -->
+    
+    <!-- START: 数据中心徽章注入脚本 (移植自代码2) -->
+    <script>
+      (function() {
+        // --- CSS徽章生成器 (不需要Canvas计算，纯HTML自动适配) ---
+        const createBadgeHTML = (label, value, valueColor = '#4c1') => {
+            return `
+              <div class="badge-flex" role="img" aria-label="${label}: ${value}">
+                <div class="badge-label">${label}</div>
+                <div class="badge-value" style="background-color: ${valueColor}">${value}</div>
+              </div>`;
+        };
+
+        // --- 异步获取数据并更新徽章 ---
+        const parseColo = (traceText) => {
+          const line = traceText.split('\n').find(line => line.startsWith('colo='));
+          return line ? line.split('=')[1] : null;
+        };
+    
+        const fetchBadgeInfo = async (siteLabel, domain, badgeContainerEl) => {
+          // 初始状态
+          badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, '查询中...', '#9f9f9f');
+          try {
+            const traceResponse = await fetch(`https://${domain}/cdn-cgi/trace`);
+            if (!traceResponse.ok) throw new Error('Trace fetch failed');
+            const traceText = await traceResponse.text();
+            const colo = parseColo(traceText);
+    
+            if (colo) {
+              let location = '未知';
+              try {
+                // 如果您想修改查询API，可以在这里更改
+                const locResponse = await fetch(`https://iata.isteed.cc/zh/${colo}`);
+                if (locResponse.ok) location = await locResponse.text() || '未知';
+              } catch (locError) {
+                console.error(`Error fetching location for ${colo}:`, locError);
+                location = '查询失败';
+              }
+              // 更新为结果，背景颜色为绿色，HTML会自动撑开宽度
+              badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, `${colo} ${location}`, '#4c1');
+            } else {
+              throw new Error('Colo not found');
+            }
+          } catch (error) {
+            console.error(`Error fetching data for ${domain}:`, error);
+            badgeContainerEl.innerHTML = createBadgeHTML(siteLabel, '获取失败', '#e05d44');
+          }
+        };
+    
+        // --- 主逻辑 ---
+        const observer = new MutationObserver((mutations, obs) => {
+          const originalFooter = document.querySelector(".footer");
+          // 确保 footer 存在且还没有插入过徽章
+          if (originalFooter && !document.querySelector('.custom-footer-badges')) {
+            
+            // --- 在这里配置你需要检测的域名 ---
+            const sites = [
+              { label: 'Main Site', domain: 'oplist.022928.xyz' },
+              { label: 'Main API', domain: 'oplist-api.022928.xyz' },
+              { label: 'R2(Bestip)', domain: 'fast-r2.022928.xyz' },
+              { label: 'R2(Source)', domain: 'r2.022928.xyz' },
+              { label: 'SharePoint CDN', domain: 'sharepoint.022928.xyz' }
+            ];
+
+            const badgeContainer = document.createElement('div');
+            badgeContainer.className = 'custom-footer-badges';
+
+            // 插入到 footer 之前
+            originalFooter.parentNode.insertBefore(badgeContainer, originalFooter);
+            
+            sites.forEach((site) => {
+              const wrapper = document.createElement('div'); // 使用div包裹防止flex布局错乱
+              badgeContainer.appendChild(wrapper);
+              fetchBadgeInfo(site.label, site.domain, wrapper);
+            });
+
+            obs.disconnect();
+          }
+        });
+    
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
+      })();
+    </script>
+    <!-- END: 脚本结束 -->
   </body>
 </html>
