@@ -20,60 +20,73 @@
     />
 
     <!-- ================================================================= -->
-    <!-- START: 用户指定的美化配置 (v3 Custom Header) -->
+    <!-- START: 美化配置 -->
     <!-- ================================================================= -->
     
     <!-- 引入自定义字体 -->
     <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/lxgwwenkai-regular.min.css">
-    <!-- 引入 FontAwesome (用于底部图标) -->
+    <!-- 引入 FontAwesome -->
     <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
         /* 移除原生视频控件 */
-        video::-webkit-media-controls {
-            display: none;
-        }
+        video::-webkit-media-controls { display: none; }
 
-        /* 设置背景图片样式 */
+        /* 
+           核心修改 1：Sticky Footer 布局基础 
+           让 body 变成弹性盒子，最小高度占满屏幕
+        */
         body {
             background-repeat: no-repeat;
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
+            
+            /* 新增布局属性 */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
         }
 
-        /* 深色模式背景 */
+        /* 
+           核心修改 2：让内容区域自动填充剩余空间 
+           这样当内容少时，footer会被挤到最下面
+        */
+        #root {
+            flex: 1;
+            width: 100%;
+        }
+
+        /* 背景图适配 */
         body.hope-ui-dark {
             background-color: rgb(32, 36, 37);
             background-image: linear-gradient(rgba(32, 36, 37, 0.7), rgba(32, 36, 37, 0.7)), url('https://t.alcy.cc/moez');
         }
-
-        /* 浅色模式背景 */
         body.hope-ui-light {
-            background-image: url('https://t.alcy.cc/moez');
+            background-image: url('https://t.alcy.cc/ycy');
         }
 
-        /* 统一站点公告的样式 */
+        /* 顶部公告透明化修复 */
         .hope-ui-light .hope-c-PJLV-ikJQsXT-css {
-            background: rgba(255, 255, 255, 0.8) !important;
-            backdrop-filter: blur(0) !important;
+            background: transparent !important;
+            backdrop-filter: none !important;
+        }
+        .hope-ui-dark .hope-c-PJLV-ikJQsXT-css {
+            background: transparent !important;
+            backdrop-filter: none !important;
         }
 
-        .hope-ui-dark .hope-c-PJLV-ikJQsXT-css {
-            background: rgb(32, 36, 37) !important;
-            backdrop-filter: blur(0) !important;
+        /* 顶部导航栏强制透明 */
+        .header, .hope-breadcrumb, .header-right, .hope-c-PJLV-ikaMhsQ-css {
+            background-color: transparent !important;
+            background: transparent !important;
         }
 
         /* 自定义字体 */
-        * {
-            font-family: "LXGW WenKai", sans-serif;
-        }
+        * { font-family: "LXGW WenKai", sans-serif; }
 
-        /* 
-           -------------------------------------------------------
-           FIX: 右下角侧边菜单样式修复 (透明 + 层级修复) 
-           -------------------------------------------------------
-        */
+        /* 右下角侧边菜单 (透明 + 层级修复) */
         .hope-c-PJLV-ijgzmFG-css {
             background-color: rgba(255, 255, 255, 0.5)!important;
             backdrop-filter: blur(10px);
@@ -85,29 +98,30 @@
     </style>
 
     <script src="https://s4.zstatic.net/ajax/libs/js-polyfills/0.1.43/polyfill.min.js?features=String.prototype.replaceAll"></script>
-    
-    <!-- ================================================================= -->
-    <!-- END: 新版美化配置 -->
-    <!-- ================================================================= -->
 
     <!-- ================================================================= -->
     <!-- START: 底部 & 徽章样式 -->
     <!-- ================================================================= -->
     <style>
+      /* 
+         核心修改 3：底部样式重构
+         移除 fixed，改为 relative 和 margin-top: auto
+      */
       .dibu {
         border-top: 0px;
-        position: fixed;
-        bottom: 0;
+        position: relative; /* 不再固定 */
+        margin-top: auto;   /* 配合 flex 布局，自动顶到底部 */
         width: 100%;
-        margin: 0px;
-        padding: 0px;
+        padding: 20px 0 10px 0; /* 增加一点上下内边距 */
+        
         color: #ffffff!important;
         text-shadow: 2px 2px 5px #000000;
         line-height: 30px;
         font-weight: bold;
         z-index: 10; 
-        pointer-events: none; /* 让鼠标穿透空白区域 */
+        pointer-events: none;
       }
+      
       .dibu a, .dibu span, .dibu div {
         pointer-events: auto;
       }
@@ -122,10 +136,7 @@
       }
       .footer { display: none!important; }
 
-      /* 
-         徽章样式修复：
-         添加 !important 以防止美化脚本(Beautifier JS)覆盖背景颜色
-      */
+      /* 徽章样式修复 (防止 JS 覆盖颜色) */
       .badge-flex {
         display: inline-flex;
         align-items: stretch;
@@ -140,7 +151,7 @@
         box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
       }
       .badge-label { 
-        background-color: #555 !important; /* 强制深灰色背景 */
+        background-color: #555 !important;
         color: #fff !important; 
         padding: 0 5px; 
       }
@@ -149,10 +160,7 @@
         padding: 0 5px; 
       }
     </style>
-    <!-- ================================================================= -->
-    <!-- END: 底部样式 -->
-    <!-- ================================================================= -->
-
+    
     <title>OpenList</title>
     <script>
       window.OPENLIST_CONFIG = {
@@ -163,10 +171,12 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    
+    <!-- 内容容器 (flex: 1) -->
     <div id="root"></div>
 
     <!-- ======================================================= -->
-    <!-- 自定义底部结构 -->
+    <!-- 自定义底部结构 (放在 root 之后，自然排列) -->
     <!-- ======================================================= -->
     <div id="customize" style="display: none;">
         <center class="dibu">
@@ -176,35 +186,25 @@
             </div>
             <!-- 链接区域 -->
             <div style="padding-bottom: 10px;">
-                 <!-- 统计 -->
                  <span class="nav-item">
                     <a href="https://cloud.umami.is/share/aeemeFNV9rFq6STN" target="_blank">
                         <i class="fa fa-line-chart"></i> 统计
                     </a>
                  </span>|
-                 
-                 <!-- 状态 -->
                  <span class="nav-item">
                     <a href="https://stats.uptimerobot.com/BxOAxgHqkh" target="_blank">
                         <i class="fa fa-heartbeat"></i> 状态
                     </a>
                  </span>|
-                 
                  <!-- 动态 登录/管理 按钮 -->
-                 <span class="nav-item" id="auth-btn-container">
-                    <!-- JS 填充 -->
-                 </span>|
-                 
-                 <!-- 邮箱 -->
+                 <span class="nav-item" id="auth-btn-container"></span>|
                  <span class="nav-item">
                     <a href="mailto:admin@022928.xyz" target="_blank">
                         <i class="fa fa-envelope"></i> 邮箱
                     </a>
                  </span>|
-                 
-                 <!-- 版权 -->
                  <span class="nav-item">
-                    <a href="https://github.com/520hacker/OpenList" target="_blank">
+                    <a href="https://github.com/OpenListTeam/OpenList" target="_blank">
                         <i class="fa fa-copyright"></i> OpenList
                     </a>
                  </span>
@@ -213,26 +213,28 @@
     </div>
 
     <!-- ================================================================= -->
-    <!-- START: 新版美化脚本 (v5-login Beautifier) -->
+    <!-- START: 美化脚本 (Beautifier) -->
     <!-- ================================================================= -->
     <style>
-        .hope-ui-light,
-        .hope-ui-dark {
-            --hope-colors-background: transparent;
-        }
+        .hope-ui-light, .hope-ui-dark { --hope-colors-background: transparent; }
         .hope-c-PJLV-ifjOQLV-css { box-shadow: var(--hope-shadows-lg); }
         .hope-c-PJLV-ihWgyFw-css, .hope-c-PJLV-ibiABng-css { display: none; }
     </style>
 
     <script type="module">
-        // v5-login Beautifier Logic
         class Beautifier {
             static ignoredSelectors = [
                 '.hope-tooltip', '.hope-tooltip__arrow', '.hope-checkbox__control',
-                '.hope-modal__overlay', '.hope-select__option', '.monaco-editor *',
+                '.hope-modal__overlay', '.hope-select__option', '.monaco-editor', 
                 'button:not(.hope-menu__trigger)', 'svg', 
-                '.dibu', '.dibu *', '.badge-flex', '.badge-flex *', // 忽略底部
-                '.hope-c-PJLV-ijgzmFG-css', '.hope-c-PJLV-ijgzmFG-css *' // 忽略侧边栏
+                // 忽略侧边栏
+                '.hope-c-PJLV-ijgzmFG-css', 
+                // 忽略自定义底部
+                '.dibu', '.nav-item', 
+                // 忽略徽章
+                '.badge-flex', '.badge-label', '.badge-value',
+                // 忽略顶部导航栏
+                '.header', '.hope-c-PJLV-ikaMhsQ-css', '.hope-breadcrumb'
             ];
 
             static getSelector(mainSelector) {
@@ -272,9 +274,7 @@
                 this.observer.observe(document.body, { childList: true, subtree: true });
                 this.#beautify();
             }
-
             disconnect() { if (this.observer) this.observer.disconnect(); }
-            
             undo() {
                 this.disconnect();
                 document.body.querySelectorAll('[data-beautified]').forEach(element => {
@@ -283,39 +283,70 @@
                 });
             }
         }
-
         const beautifier = new Beautifier();
         window.beautifier = beautifier;
         beautifier.observe();
     </script>
-    <!-- ================================================================= -->
-    <!-- END: 新版美化脚本 -->
-    <!-- ================================================================= -->
 
     <!-- ================================================================= -->
-    <!-- 逻辑脚本 -->
+    <!-- 逻辑脚本: 动态路由监听与底部隐藏逻辑 -->
     <!-- ================================================================= -->
     <script>
-        // 1. SPA 无刷新跳转函数
+        // 核心函数：处理路由变化 (隐藏底部 + 更新按钮)
+        function handleRouteUpdate() {
+            const path = location.pathname;
+            const footerContainer = document.getElementById('customize');
+            
+            // 1. 如果在管理页面 (/@manage)，隐藏底部；否则显示
+            if (footerContainer) {
+                if (path.startsWith('/@manage')) {
+                    footerContainer.style.display = 'none';
+                } else {
+                    // 确保恢复显示（前提是已经通过初始化检查）
+                    footerContainer.style.display = ''; 
+                }
+            }
+
+            // 2. 每次路由变化都重新检查登录状态并渲染按钮
+            renderAuthButton();
+        }
+
+        // SPA 无刷新跳转辅助函数
         window.internalJump = function(path) {
             history.pushState(null, '', path);
             window.dispatchEvent(new PopStateEvent('popstate'));
-            window.dispatchEvent(new Event('hashchange'));
         }
 
-        // 2. 渲染 Auth 按钮
+        // 监听 History API 变化
+        window.addEventListener('popstate', handleRouteUpdate);
+        
+        // 拦截 pushState 和 replaceState 以检测 React 路由跳转
+        const originalPush = history.pushState;
+        history.pushState = function() {
+            originalPush.apply(this, arguments);
+            handleRouteUpdate();
+        };
+        const originalReplace = history.replaceState;
+        history.replaceState = function() {
+            originalReplace.apply(this, arguments);
+            handleRouteUpdate();
+        };
+
+        // 渲染 登录/管理 按钮
         function renderAuthButton() {
             const container = document.getElementById('auth-btn-container');
             if(!container) return;
-            // 检查 localStorage 中是否有 token
+            
             const token = localStorage.getItem('token');
             if (token) {
+                // 已登录 -> 跳转管理页
                 container.innerHTML = `
                     <a onclick="window.internalJump('/@manage'); return false;" style="cursor: pointer;">
                         <i class="fa fa-cog"></i> 管理
                     </a>
                 `;
             } else {
+                // 未登录 -> 跳转登录页
                 container.innerHTML = `
                     <a onclick="window.internalJump('/@login'); return false;" style="cursor: pointer;">
                         <i class="fa fa-sign-in"></i> 登录
@@ -324,30 +355,32 @@
             }
         }
 
-        // 3. 初始化
+        // 初始化检测
         let interval = setInterval(() => {
             if (document.querySelector(".footer")) {
-                document.querySelector("#customize").style.display = "";
-                clearInterval(interval);
-                loadBadges();
-                renderAuthButton();
+                const footerDiv = document.querySelector("#customize");
+                if (footerDiv) {
+                    footerDiv.style.display = ""; 
+                    loadBadges();
+                    handleRouteUpdate(); // 立即执行一次路由判断
+                    clearInterval(interval);
+                }
             }
         }, 200);
 
-        // 4. 加载徽章
+        // 加载徽章
         function loadBadges() {
             const container = document.getElementById('badges-row');
             if (!container) return;
             
             const sites = [
-                { label: 'Main', domain: 'oplist.022928.xyz' },
-                { label: 'API', domain: 'oplist-api.022928.xyz' },
-                { label: 'R2(Best)', domain: 'fast-r2.022928.xyz' },
+                { label: 'Main Site', domain: 'oplist.022928.xyz' },
+                { label: 'Openlist API', domain: 'oplist-api.022928.xyz' },
+                { label: 'R2(Bestip)', domain: 'fast-r2.022928.xyz' },
                 { label: 'R2(Src)', domain: 'r2.022928.xyz' },
-                { label: 'SP CDN', domain: 'sharepoint.022928.xyz' }
+                { label: 'SharePoint CDN', domain: 'sharepoint.022928.xyz' }
             ];
 
-            // 修复关键点：在内联样式中添加 !important
             const createBadge = (label, text, color) => `
                 <div class="badge-flex">
                     <div class="badge-label">${label}</div>
@@ -364,7 +397,7 @@
 
             sites.forEach(async (site) => {
                 const span = document.createElement('span');
-                span.innerHTML = createBadge(site.label, '...', '#999');
+                span.innerHTML = createBadge(site.label, '...', '#999999');
                 container.appendChild(span);
 
                 try {
@@ -380,7 +413,7 @@
                             if(lRes.ok) loc = await lRes.text();
                         } catch(e){}
                         const val = loc ? `${colo} ${loc}` : colo;
-                        span.innerHTML = createBadge(site.label, val, '#4c1'); 
+                        span.innerHTML = createBadge(site.label, val, '#44cc11'); 
                     } else {
                         span.innerHTML = createBadge(site.label, 'Unknown', '#e05d44');
                     }
