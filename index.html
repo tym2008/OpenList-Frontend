@@ -1,5 +1,56 @@
 <!doctype html>
 <html lang="en" translate="no">
+  <!-- v3 -->
+
+<!-- 引入自定义字体 -->
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/lxgwwenkai-regular.min.css">
+
+<style>
+    /* 移除原生视频控件 */
+    video::-webkit-media-controls {
+        display: none;
+    }
+
+    /* 设置背景图片样式 */
+    body {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+    }
+
+    /* 在此处的url()里修改背景图片地址 */
+    /* 加了个深色遮罩，爱护你的眼睛 */
+    body.hope-ui-dark {
+        background-color: rgb(32, 36, 37);
+        background-image: linear-gradient(rgba(32, 36, 37, 0.7), rgba(32, 36, 37, 0.7)), url('https://t.alcy.cc/moez');
+    }
+
+    /* 在此处的url()里修改背景图片地址 */
+    body.hope-ui-light {
+        background-image: url('https://t.alcy.cc/moez');
+    }
+
+    /* 统一站点公告的样式 */
+    .hope-ui-light .hope-c-PJLV-ikJQsXT-css {
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(0) !important;
+    }
+
+    .hope-ui-dark .hope-c-PJLV-ikJQsXT-css {
+        background: rgb(32, 36, 37) !important;
+        backdrop-filter: blur(0) !important;
+    }
+
+    /* 自定义字体 */
+    * {
+        font-family: "LXGW WenKai", sans-serif;
+    }
+</style>
+
+
+<script
+    src="https://s4.zstatic.net/ajax/libs/js-polyfills/0.1.43/polyfill.min.js?features=String.prototype.replaceAll"></script>
   <head>
     <!-- customize head -->
     <meta charset="utf-8" />
@@ -27,6 +78,128 @@
       }
       window.__dynamic_base__ = window.OPENLIST_CONFIG.cdn || ""
     </script>
+    <!-- v5-login -->
+
+<!-- 修正部分区域的透明 -->
+<style>
+    .hope-ui-light,
+    .hope-ui-dark {
+        --hope-colors-background: transparent;
+    }
+</style>
+
+<!-- 登录界面优化 -->
+<style>
+    .hope-c-PJLV-ifjOQLV-css {
+        box-shadow: var(--hope-shadows-lg);
+    }
+
+    .hope-c-PJLV-ihWgyFw-css,
+    .hope-c-PJLV-ibiABng-css {
+        display: none;
+    }
+</style>
+
+<script type="module">
+    // v5-login
+
+    class Beautifier {
+        /**
+            * Beautifier 类用于美化页面背景色
+            * 
+            * 其提供了3个方法：
+            * - observe: 开始监听页面变化并美化背景色
+            * - disconnect: 停止监听页面变化
+            * - undo: 恢复页面背景色到默认状态
+            *
+            * 可以通过window.beautifier访问实例对象
+            * 
+         */
+        static ignoredSelectors = [
+            '.hope-tooltip', // 提示小标签及其装饰
+            '.hope-tooltip__arrow',
+            '.hope-checkbox__control',// 复选框
+            '.hope-modal__overlay', // 模态框遮罩
+            '.hope-select__option', // 下拉选项
+            '.monaco-editor *', // 代码编辑器
+            'button:not(.hope-menu__trigger)', // 除目录外按钮
+            'svg' // SVG 图标
+        ];
+
+        static getSelector(mainSelector) {
+            return `${mainSelector} :not(${Beautifier.ignoredSelectors.join('):not(')})`;
+        }
+
+        static lightSelector = Beautifier.getSelector('.hope-ui-light');
+        static darkSelector = Beautifier.getSelector('.hope-ui-dark');
+
+        static lightBgColor = 'rgba(255, 255, 255, 0.8)';
+        static darkBgColor = 'rgb(32, 36, 37)';
+
+        static specificPrefix = 'rgba(132, 133, 141,';
+
+        constructor() {
+            this.observer = null;
+        }
+
+        /**
+         * @param {'light'|'dark'} theme
+         */
+        #rewriteStyle(theme) {
+            let selector = theme === 'light' ? Beautifier.lightSelector : Beautifier.darkSelector;
+            let bgColor = theme === 'light' ? Beautifier.lightBgColor : Beautifier.darkBgColor;
+
+            document.querySelectorAll(selector).forEach(element => {
+                const computedStyle = getComputedStyle(element);
+
+                if (computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+                    !computedStyle.backgroundColor.startsWith(Beautifier.specificPrefix)) {
+                    element.style.backgroundColor = bgColor;
+
+                    element.setAttribute('data-beautified', 'true');
+                }
+            });
+        }
+
+        #beautify() {
+            if (!location.pathname.startsWith('/@manage')) {
+                this.#rewriteStyle('light');
+                this.#rewriteStyle('dark');
+            }
+        }
+
+        observe() {
+            this.observer = new MutationObserver(this.#beautify.bind(this));
+            this.observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+
+            this.#beautify();
+        }
+
+        disconnect() {
+            if (this.observer) {
+                this.observer.disconnect();
+            }
+        }
+
+        undo() {
+            this.disconnect();
+
+            document.body.querySelectorAll('[data-beautified]').forEach(element => {
+                element.style.backgroundColor = '';
+
+                element.removeAttribute('data-beautified');
+            });
+        }
+    }
+
+    const beautifier = new Beautifier();
+    window.beautifier = beautifier;
+
+    beautifier.observe();
+</script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
