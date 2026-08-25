@@ -71,6 +71,24 @@ export const initialLocalSettings = [
     default: "14",
     type: "number",
   },
+  {
+    key: "editor_word_wrap",
+    default: "false",
+    type: "select",
+    options: ["false", "true"],
+  },
+  {
+    key: "editor_minimap",
+    default: "true",
+    type: "select",
+    options: ["false", "true"],
+  },
+  {
+    key: "show_gallery_thumbnails",
+    default: "visible",
+    type: "select",
+    options: ["none", "visible"],
+  },
 ]
 export type LocalSetting = (typeof initialLocalSettings)[number]
 for (const setting of initialLocalSettings) {

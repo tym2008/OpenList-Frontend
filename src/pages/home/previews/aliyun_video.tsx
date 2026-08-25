@@ -1,14 +1,21 @@
 import { Box, Center } from "@hope-ui/solid"
 import { Show, createMemo, createSignal, onCleanup, onMount } from "solid-js"
 import { useRouter, useLink, useFetch } from "~/hooks"
-import { getMainColor, getSettingBool, objStore, password } from "~/store"
+import {
+  getMainColor,
+  getSettingBool,
+  objStore,
+  password,
+  setShouldKeepState,
+} from "~/store"
 import { ObjType, PResp } from "~/types"
 import { ext, handleResp, notify, r, pathDir, pathJoin } from "~/utils"
 import Artplayer from "artplayer"
-import { type Option } from "artplayer/types/option"
-import { type Setting } from "artplayer/types/setting"
-import { type Events } from "artplayer/types/events"
+import { type Option } from "artplayer"
+import { type Setting } from "artplayer"
+import { type Events } from "artplayer"
 import artplayerPluginDanmuku from "artplayer-plugin-danmuku"
+import { type Option as DanmukuOption } from "artplayer-plugin-danmuku"
 import artplayerPluginAss from "~/components/artplayer-plugin-ass"
 import Hls from "hls.js"
 import { currentLang } from "~/app/i18n"
@@ -77,7 +84,6 @@ const Preview = () => {
   let option: Option = {
     id: pathname(),
     container: "#video-player",
-    title: objStore.obj.name,
     volume: 1.0,
     autoplay: getSettingBool("video_autoplay"),
     autoSize: false,
@@ -286,28 +292,26 @@ const Preview = () => {
   if (danmu) {
     option.plugins?.push(
       artplayerPluginDanmuku({
-        danmuku: proxyLink(danmu, true),
         speed: 5,
         opacity: 1,
         fontSize: 25,
-        color: "#FFFFFF",
         mode: 0,
-        margin: [0, "0%"],
         antiOverlap: false,
         synchronousPlayback: false,
-        lockTime: 5,
-        maxLength: 100,
         theme: "dark",
+        heatmap: true,
+        ...JSON.parse(localStorage.getItem("danmuku_config") || "{}"),
+        emitter: false,
+        danmuku: proxyLink(danmu, true),
       }),
     )
   }
-  const [loading, post] = useFetch(
-    (): PResp<Data> =>
-      r.post("/fs/other", {
-        path: pathname(),
-        password: password(),
-        method: "video_preview",
-      }),
+  const [, post] = useFetch((): PResp<Data> =>
+    r.post("/fs/other", {
+      path: pathname(),
+      password: password(),
+      method: "video_preview",
+    }),
   )
   onMount(async () => {
     const resp = await post()
@@ -342,6 +346,37 @@ const Preview = () => {
       player.on("ready", () => {
         player.fullscreen = auto_fullscreen
       })
+      if (danmu) {
+        player.on("artplayerPluginDanmuku:config", (option) => {
+          const {
+            speed,
+            margin,
+            opacity,
+            mode,
+            modes,
+            fontSize,
+            antiOverlap,
+            synchronousPlayback,
+            heatmap,
+            visible,
+          } = option as DanmukuOption
+          localStorage.setItem(
+            "danmuku_config",
+            JSON.stringify({
+              speed,
+              margin,
+              opacity,
+              mode,
+              modes,
+              fontSize,
+              antiOverlap,
+              synchronousPlayback,
+              heatmap,
+              visible,
+            }),
+          )
+        })
+      }
       player.on("video:ended", () => {
         if (!autoNext()) return
         next_video()
@@ -389,7 +424,14 @@ const Preview = () => {
     })
   }
   onCleanup(() => {
-    player?.destroy()
+    setShouldKeepState(false)
+    if (player) {
+      player.fullscreenWeb = false
+      player.fullscreen = false
+      player.pip = false
+      if (player.video) player.video.src = ""
+      player.destroy()
+    }
     window.clearInterval(interval)
   })
   const [autoNext, setAutoNext] = createSignal()

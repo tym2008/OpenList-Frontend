@@ -1,4 +1,5 @@
-type Status = "pending" | "uploading" | "backending" | "success" | "error"
+type Status =
+  "pending" | "hashing" | "uploading" | "backending" | "success" | "error"
 export interface UploadFileProps {
   name: string
   path: string
@@ -10,6 +11,7 @@ export interface UploadFileProps {
 }
 export const StatusBadge = {
   pending: "neutral",
+  hashing: "warning",
   uploading: "info",
   backending: "info",
   success: "success",

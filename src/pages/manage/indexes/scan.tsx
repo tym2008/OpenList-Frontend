@@ -13,6 +13,7 @@ import { useFetch, useT } from "~/hooks"
 import { createSignal, Show } from "solid-js"
 import { Flag, PEmptyResp, PResp, Type } from "~/types"
 import { formatDate, handleResp, handleRespWithNotifySuccess, r } from "~/utils"
+import { FolderChooseInput } from "~/components"
 
 type Progress = {
   obj_count: number
@@ -22,8 +23,8 @@ type Progress = {
 const Scan = () => {
   const t = useT()
   const [progress, setProgress] = createSignal<Progress>()
-  const [progressLoading, getProgressReq] = useFetch(
-    (): PResp<Progress> => r.get("/admin/scan/progress"),
+  const [progressLoading, getProgressReq] = useFetch((): PResp<Progress> =>
+    r.get("/admin/scan/progress"),
   )
   const [refreshTimeout, setRefreshTimeout] = createSignal<number | undefined>()
   const resetRefreshTimeout = (run: boolean) => {
@@ -50,8 +51,8 @@ const Scan = () => {
     )
   }
   refreshProgress()
-  const [stopLoading, stopReq] = useFetch(
-    (): PEmptyResp => r.post("/admin/scan/stop"),
+  const [stopLoading, stopReq] = useFetch((): PEmptyResp =>
+    r.post("/admin/scan/stop"),
   )
   const stop = async () => {
     const resp = await stopReq()
@@ -60,9 +61,8 @@ const Scan = () => {
   }
   const [scanPath, setScanPath] = createSignal<string>("/")
   const [rateLimit, setRateLimit] = createSignal<number>(0.0)
-  const [startLoading, startReq] = useFetch(
-    (): PEmptyResp =>
-      r.post("/admin/scan/start", { path: scanPath(), limit: rateLimit() }),
+  const [startLoading, startReq] = useFetch((): PEmptyResp =>
+    r.post("/admin/scan/start", { path: scanPath(), limit: rateLimit() }),
   )
   const start = async () => {
     const resp = await startReq()
@@ -111,9 +111,9 @@ const Scan = () => {
         <FormLabel display="flex" alignItems="center">
           {t("indexes.path_to_scan")}
         </FormLabel>
-        <Input
+        <FolderChooseInput
           value={scanPath()}
-          onInput={(e) => setScanPath(e.currentTarget.value)}
+          onChange={(path) => setScanPath(path)}
         />
         <FormLabel display="flex" alignItems="center">
           {t("indexes.rate_limit")}

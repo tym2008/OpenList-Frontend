@@ -20,20 +20,41 @@ import {
   Match,
   Show,
   Switch,
+  Suspense,
+  onCleanup,
 } from "solid-js"
-import { getMainColor, local, me, OrderBy, password } from "~/store"
-import { Obj, ObjTree, UserMethods, UserPermissions } from "~/types"
-import { useFetch, useRouter, useT, useUtil } from "~/hooks"
+import { Dynamic } from "solid-js/web"
+import {
+  getMainColor,
+  local,
+  me,
+  OrderBy,
+  password,
+  objStore,
+  ObjStore,
+} from "~/store"
+import {
+  Obj,
+  ObjTree,
+  UserMethods,
+  UserPermissions,
+  ObjType,
+  ArchiveObj,
+  Resp,
+} from "~/types"
+import { useFetch, useRouter, useT, useUtil, useLink } from "~/hooks"
 import { ListTitle } from "~/pages/home/folder/List"
 import { cols } from "~/pages/home/folder/ListItem"
-import { Error, MaybeLoading } from "~/components"
+import { Error, MaybeLoading, FullLoading, SelectWrapper } from "~/components"
+import { OpenWith } from "../file/open-with"
+import { getPreviews } from "."
 import {
   bus,
-  encodePath,
   formatDate,
   fsArchiveList,
   fsArchiveMeta,
   getFileSize,
+  handleRespWithoutNotify,
   hoverColor,
 } from "~/utils"
 import naturalSort from "typescript-natural-sort"
@@ -58,6 +79,7 @@ type ListItemProps = {
   innerPath: string
   url?: string
   pass: string
+  onFileClick?: () => void
 }
 
 const ListItem = (props: ListItemProps) => {
@@ -88,8 +110,8 @@ const ListItem = (props: ListItemProps) => {
         on:click={(_: MouseEvent) => {
           if (props.obj.is_dir) {
             props.jumpCallback()
-          } else if (props.url) {
-            download(props.url)
+          } else if (!props.obj.is_dir && props.onFileClick) {
+            props.onFileClick()
           }
         }}
         onContextMenu={(e: MouseEvent) => {
@@ -219,6 +241,7 @@ type List = {
 const Preview = () => {
   const t = useT()
   const { pathname } = useRouter()
+  const { rawLink } = useLink()
   const [metaLoading, fetchMeta] = useFetch(fsArchiveMeta)
   const [listLoading, fetchList] = useFetch(fsArchiveList)
   const loading = createMemo(() => {
@@ -238,6 +261,8 @@ const Preview = () => {
   const [extractFolder, setExtractFolder] = createSignal<"" | "front" | "back">(
     "",
   )
+  const [selectedFile, setSelectedFile] = createSignal<string>("")
+  const [selectedPreviewKey, setSelectedPreviewKey] = createSignal("")
   const getObjsMutex = createMutex()
   const toList = (tree: ObjTree[] | Obj[]): List => {
     let l: List = {}
@@ -249,9 +274,8 @@ const Preview = () => {
     })
     return l
   }
-  const dealWithError = (resp: { code: number; message: string }): boolean => {
-    if (resp.code === 200) return false
-    if (resp.code === 202) {
+  const handleErrorResponse = (message: string, code: number | undefined) => {
+    if (code === 202) {
       batch(() => {
         if (archive_pass !== "") {
           setWrongPassword(true)
@@ -260,9 +284,13 @@ const Preview = () => {
         setError("")
       })
     } else {
-      setError(resp.message)
+      setError(message)
     }
-    return true
+  }
+  const dealWithError = <T,>(resp: Resp<T>): boolean => {
+    let err = true
+    handleRespWithoutNotify(resp, () => (err = false), handleErrorResponse)
+    return err
   }
   const getObjs = async (innerPath: string[]) => {
     await getObjsMutex.acquire()
@@ -361,6 +389,26 @@ const Preview = () => {
     }
     return ret
   }
+  // Build inner file url for current path by filename
+  const buildInnerUrl = (name: string) => {
+    const innerPath =
+      (innerPaths().length > 0 ? "/" + innerPaths().join("/") : "") + "/" + name
+    return innerPath
+  }
+  // Build obj with inner property
+  const buildObjWithInner = (obj: Obj): ArchiveObj => {
+    const innerPath =
+      innerPaths().length > 0 ? "/" + innerPaths().join("/") : ""
+
+    return {
+      ...obj,
+      sign: sign,
+      inner_path: innerPath,
+      archive: originalObj,
+      pass: archive_pass,
+    }
+  }
+
   const sortObjs = (orderBy: OrderBy, reverse?: boolean) => {
     batch(() => {
       setExtractFolder("")
@@ -370,13 +418,79 @@ const Preview = () => {
       }
     })
   }
+
+  // Get all files for navigation
+  const files = createMemo(() =>
+    sortedObjs()
+      .filter((obj) => !obj.is_dir)
+      .map((f) => buildObjWithInner(f)),
+  )
+
+  const previews = createMemo(() => {
+    const file = files().find((f) => f.name === selectedFile())
+    if (!file) return []
+
+    return getPreviews({ ...file, provider: objStore.provider })
+  })
+
+  const currentPreview = createMemo(() => {
+    const p = previews()
+    if (p.length === 0) return null
+    if (selectedPreviewKey()) {
+      const found = p.find((item) => item.key === selectedPreviewKey())
+      if (found) return found
+    }
+    return p[0]
+  })
+
+  // Cast to ArchiveObj to make sure onCleanup can delete archive property correctly
+  const originalObj: ArchiveObj = {
+    ...objStore.obj,
+    inner_path: undefined,
+    archive: undefined,
+  }
+  const originalRawUrl = objStore.raw_url
+
+  const changeFile = (name: string) => {
+    batch(() => {
+      if (name === "") {
+        // Restore
+        ObjStore.setObj(originalObj)
+        ObjStore.setRawUrl(originalRawUrl)
+        setSelectedFile("")
+      } else {
+        // Set new
+        const file = files().find((f) => f.name === name)
+        if (file) {
+          const innerUrl = rawLink(file)
+          ObjStore.setObj(file)
+          ObjStore.setRawUrl(innerUrl)
+          setSelectedFile(name)
+        }
+      }
+    })
+  }
+
+  onCleanup(() => {
+    // Restore original values
+    ObjStore.setObj(originalObj)
+    ObjStore.setRawUrl(originalRawUrl)
+  })
+
+  createEffect(() => {
+    selectedFile()
+    setSelectedPreviewKey("")
+  })
   return (
     <VStack spacing="$2" w="$full">
       <Breadcrumb pl="$2" pr="$2" w="$full">
         <BreadcrumbItem>
           <BreadcrumbLink
-            currentPage={innerPaths().length === 0}
-            on:click={() => setInnerPaths([])}
+            currentPage={innerPaths().length === 0 && !selectedFile()}
+            on:click={() => {
+              setInnerPaths([])
+              changeFile("")
+            }}
           >
             .
           </BreadcrumbLink>
@@ -386,14 +500,23 @@ const Preview = () => {
             <BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbLink
-                currentPage={innerPaths().length === i() + 1}
-                on:click={() => setInnerPaths(innerPaths().slice(0, i() + 1))}
+                currentPage={innerPaths().length === i() + 1 && !selectedFile()}
+                on:click={() => {
+                  setInnerPaths(innerPaths().slice(0, i() + 1))
+                  changeFile("")
+                }}
               >
                 {name}
               </BreadcrumbLink>
             </BreadcrumbItem>
           )}
         </For>
+        <Show when={selectedFile()}>
+          <BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbLink currentPage={true}>{selectedFile()}</BreadcrumbLink>
+          </BreadcrumbItem>
+        </Show>
       </Breadcrumb>
       <Switch>
         <Match when={error() !== ""}>
@@ -414,47 +537,65 @@ const Preview = () => {
           </Password>
         </Match>
         <Match when={!requiringPassword() && error() === ""}>
-          <MaybeLoading loading={loading()}>
-            <VStack class="list" w="$full" spacing="$1">
-              <ListTitle sortCallback={sortObjs} disableCheckbox />
-              <For each={sortedObjs()}>
-                {(obj, i) => {
-                  let url = undefined
-                  let innerPath =
-                    (innerPaths().length > 0
-                      ? "/" + innerPaths().join("/")
-                      : "") +
-                    "/" +
-                    obj.name
-                  if (!obj.is_dir) {
-                    const hasQuery = raw_url.includes("?")
-                    url =
-                      raw_url +
-                      `${hasQuery ? "&" : "?"}inner=${encodePath(innerPath, true)}`
-                    if (archive_pass !== "") {
-                      url = url + `&pass=${encodeURIComponent(archive_pass)}`
-                    }
-                    if (sign !== "") {
-                      url = url + `&sign=${sign}`
-                    }
-                  }
-                  return (
-                    <ListItem
-                      obj={obj}
-                      index={i()}
-                      jumpCallback={() =>
-                        setInnerPaths(innerPaths().concat(obj.name))
-                      }
-                      innerPath={innerPath}
-                      url={url}
-                      pass={archive_pass}
-                    />
-                  )
-                }}
-              </For>
-              <ContextMenu />
+          <Show
+            when={selectedFile()}
+            fallback={
+              <MaybeLoading loading={loading()}>
+                <VStack class="list" w="$full" spacing="$1">
+                  <ListTitle sortCallback={sortObjs} disableCheckbox />
+                  <For each={sortedObjs()}>
+                    {(obj, i) => {
+                      const objWithInner = buildObjWithInner(obj)
+                      // Use rawLink to construct the URL for the object
+                      let url = !obj.is_dir ? rawLink(objWithInner) : undefined
+                      let innerPath = buildInnerUrl(obj.name)
+                      return (
+                        <ListItem
+                          obj={obj}
+                          index={i()}
+                          jumpCallback={() =>
+                            setInnerPaths(innerPaths().concat(obj.name))
+                          }
+                          innerPath={innerPath}
+                          url={url}
+                          pass={archive_pass}
+                          onFileClick={() => changeFile(obj.name)}
+                        />
+                      )
+                    }}
+                  </For>
+                  <ContextMenu />
+                </VStack>
+              </MaybeLoading>
+            }
+          >
+            <VStack w="$full" spacing="$2" alignItems="center">
+              <Show when={currentPreview()}>
+                <Suspense fallback={<FullLoading />}>
+                  <Dynamic
+                    component={currentPreview()?.component}
+                    images={files().filter((f) => f.type === ObjType.IMAGE)}
+                    navigate={(name) => {
+                      changeFile(name)
+                    }}
+                  />
+                </Suspense>
+              </Show>
+              <HStack w="$full" justifyContent="center" spacing="$2" p="$2">
+                <Show when={previews().length > 1}>
+                  <SelectWrapper
+                    value={currentPreview()?.key || ""}
+                    onChange={(value) => setSelectedPreviewKey(String(value))}
+                    options={previews().map((p) => ({
+                      value: p.key,
+                      label: p.name,
+                    }))}
+                  />
+                </Show>
+                <OpenWith />
+              </HStack>
             </VStack>
-          </MaybeLoading>
+          </Show>
         </Match>
       </Switch>
       <Show when={comment() !== ""}>
