@@ -2,11 +2,7 @@
 <html lang="en" translate="no">
   <head>
     <!-- customize head -->
-    <script
-      defer
-      src="https://cloud.umami.is/script.js"
-      data-website-id="cd9b123a-76fb-4fa0-b054-0ea1cb687311"
-    ></script>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="cd9b123a-76fb-4fa0-b054-0ea1cb687311"></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="referrer" content="same-origin" />
@@ -27,219 +23,314 @@
     <!-- ================================================================= -->
     <!-- START: 美化配置 -->
     <!-- ================================================================= -->
-
+    
     <!-- 引入自定义字体 -->
-    <link
-      rel="stylesheet"
-      href="https://s4.zstatic.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/lxgwwenkai-regular.min.css"
-    />
+    <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/lxgw-wenkai-webfont/1.7.0/lxgwwenkai-regular.min.css">
     <!-- 引入 FontAwesome -->
-    <link
-      rel="stylesheet"
-      href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
-      /* 移除原生视频控件 */
-      video::-webkit-media-controls {
-        display: none;
-      }
+        /* 移除原生视频控件 */
+        video::-webkit-media-controls { display: none; }
 
-      /* 布局基础 */
-      body {
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center;
+        /* 
+           核心修改 1：Sticky Footer 布局基础 
+           让 body 变成弹性盒子，最小高度占满屏幕
+        */
+        body {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            
+            /* 新增布局属性 */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-      }
+        /* 
+           核心修改 2：让内容区域自动填充剩余空间 
+           这样当内容少时，footer会被挤到最下面
+        */
+        #root {
+            flex: 1;
+            width: 100%;
+        }
 
-      /* 让内容区域自动填充剩余空间 */
-      #root {
-        flex: 1;
-        width: 100%;
-      }
+        /* 背景图适配 */
+        body.hope-ui-dark {
+            background-color: rgb(32, 36, 37);
+            background-image: linear-gradient(rgba(32, 36, 37, 0.7), rgba(32, 36, 37, 0.7)), url('https://t.alcy.cc/moez');
+        }
+        body.hope-ui-light {
+            background-image: url('https://t.alcy.cc/ycy');
+        }
 
-      /* 背景图适配 */
-      body.hope-ui-dark {
-        background-color: rgb(32, 36, 37);
-        background-image: linear-gradient(
-            rgba(32, 36, 37, 0.7),
-            rgba(32, 36, 37, 0.7)
-          ),
-          url("https://t.alcy.cc/moez");
-      }
-      body.hope-ui-light {
-        background-image: url("https://t.alcy.cc/ycy");
-      }
+        /* 顶部公告透明化修复 */
+        .hope-ui-light .hope-c-PJLV-ikJQsXT-css {
+            background: transparent !important;
+            backdrop-filter: none !important;
+        }
+        .hope-ui-dark .hope-c-PJLV-ikJQsXT-css {
+            background: transparent !important;
+            backdrop-filter: none !important;
+        }
 
-      /* 顶部公告透明化修复 */
-      .hope-ui-light .hope-c-PJLV-ikJQsXT-css {
-        background: transparent !important;
-        backdrop-filter: none !important;
-      }
-      .hope-ui-dark .hope-c-PJLV-ikJQsXT-css {
-        background: transparent !important;
-        backdrop-filter: none !important;
-      }
+        /* 顶部导航栏强制透明 */
+        .header, .hope-breadcrumb, .header-right, .hope-c-PJLV-ikaMhsQ-css {
+            background-color: transparent !important;
+            background: transparent !important;
+        }
 
-      /* 顶部导航栏强制透明 */
-      .header,
-      .hope-breadcrumb,
-      .header-right,
-      .hope-c-PJLV-ikaMhsQ-css {
-        background-color: transparent !important;
-        background: transparent !important;
-      }
+        /* 自定义字体 */
+        * { font-family: "LXGW WenKai", sans-serif; }
 
-      /* 自定义字体 */
-      * {
-        font-family: "LXGW WenKai", sans-serif;
-      }
-
-      /* 右下角侧边菜单 (透明 + 层级修复) */
-      .hope-c-PJLV-ijgzmFG-css {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-        backdrop-filter: blur(10px);
-        z-index: 10000 !important;
-      }
-      .hope-ui-dark .hope-c-PJLV-ijgzmFG-css {
-        background-color: rgba(0, 0, 0, 0.5) !important;
-      }
-
-      /* 隐藏原始底部 */
-      .footer {
-        display: none !important;
-      }
+        /* 右下角侧边菜单 (透明 + 层级修复) */
+        .hope-c-PJLV-ijgzmFG-css {
+            background-color: rgba(255, 255, 255, 0.5)!important;
+            backdrop-filter: blur(10px);
+            z-index: 10000 !important; 
+        }
+        .hope-ui-dark .hope-c-PJLV-ijgzmFG-css {
+            background-color: rgba(0, 0, 0, 0.5)!important;
+        }
     </style>
 
     <script src="https://s4.zstatic.net/ajax/libs/js-polyfills/0.1.43/polyfill.min.js?features=String.prototype.replaceAll"></script>
 
+    <!-- ================================================================= -->
+    <!-- START: 底部样式（不含徽章） -->
+    <!-- ================================================================= -->
+    <style>
+      .dibu {
+        border-top: 0px;
+        position: relative;
+        margin-top: auto;
+        width: 100%;
+        padding: 20px 0 10px 0;
+        
+        color: #ffffff!important;
+        text-shadow: 2px 2px 5px #000000;
+        line-height: 30px;
+        font-weight: bold;
+        z-index: 10; 
+        pointer-events: none;
+      }
+      
+      .dibu a, .dibu span, .dibu div {
+        pointer-events: auto;
+      }
+      .nav-item {
+        font-size: 14px;
+        margin: 0 5px;
+      }
+      .nav-item a {
+        color: #ffffff!important;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .footer { display: none!important; }
+    </style>
+    
     <title>OpenList</title>
     <script>
       window.OPENLIST_CONFIG = {
-        cdn: undefined,
-        base_path: undefined,
-        api: undefined,
-        main_color: undefined,
-      };
-      window.__dynamic_base__ = window.OPENLIST_CONFIG.cdn || "";
+        cdn: undefined, base_path: undefined, api: undefined, main_color: undefined,
+      }
+      window.__dynamic_base__ = window.OPENLIST_CONFIG.cdn || ""
     </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-
-    <!-- 内容容器 -->
+    
+    <!-- 内容容器 (flex: 1) -->
     <div id="root"></div>
 
+    <!-- ======================================================= -->
+    <!-- 自定义底部结构（仅保留设置栏链接） -->
+    <!-- ======================================================= -->
+    <div id="customize" style="display: none;">
+        <center class="dibu">
+            <!-- 链接区域 -->
+            <div style="padding-bottom: 10px;">
+                 <span class="nav-item">
+                    <a href="https://cloud.umami.is/share/aeemeFNV9rFq6STN" target="_blank">
+                        <i class="fa fa-line-chart"></i> 统计
+                    </a>
+                 </span>|
+                 <span class="nav-item">
+                    <a href="https://stats.uptimerobot.com/BxOAxgHqkh" target="_blank">
+                        <i class="fa fa-heartbeat"></i> 状态
+                    </a>
+                 </span>|
+                 <!-- 动态 登录/管理 按钮 -->
+                 <span class="nav-item" id="auth-btn-container"></span>|
+                 <span class="nav-item">
+                    <a href="mailto:admin@022928.xyz" target="_blank">
+                        <i class="fa fa-envelope"></i> 邮箱
+                    </a>
+                 </span>|
+                 <span class="nav-item">
+                    <a href="https://github.com/OpenListTeam/OpenList" target="_blank">
+                        <i class="fa fa-copyright"></i> OpenList
+                    </a>
+                 </span>
+            </div>
+        </center>
+    </div>
     <!-- ================================================================= -->
     <!-- START: 美化脚本 (Beautifier) -->
     <!-- ================================================================= -->
     <style>
-      .hope-ui-light,
-      .hope-ui-dark {
-        --hope-colors-background: transparent;
-      }
-      .hope-c-PJLV-ifjOQLV-css {
-        box-shadow: var(--hope-shadows-lg);
-      }
-      .hope-c-PJLV-ihWgyFw-css,
-      .hope-c-PJLV-ibiABng-css {
-        display: none;
-      }
+        .hope-ui-light, .hope-ui-dark { --hope-colors-background: transparent; }
+        .hope-c-PJLV-ifjOQLV-css { box-shadow: var(--hope-shadows-lg); }
+        .hope-c-PJLV-ihWgyFw-css, .hope-c-PJLV-ibiABng-css { display: none; }
     </style>
 
     <script type="module">
-      class Beautifier {
-        static ignoredSelectors = [
-          ".hope-tooltip",
-          ".hope-tooltip__arrow",
-          ".hope-checkbox__control",
-          ".hope-modal__overlay",
-          ".hope-select__option",
-          ".monaco-editor",
-          "button:not(.hope-menu__trigger)",
-          "svg",
-          // 忽略侧边栏
-          ".hope-c-PJLV-ijgzmFG-css",
-          // 忽略顶部导航栏
-          ".header",
-          ".hope-c-PJLV-ikaMhsQ-css",
-          ".hope-breadcrumb",
-        ];
+        class Beautifier {
+            static ignoredSelectors = [
+                '.hope-tooltip', '.hope-tooltip__arrow', '.hope-checkbox__control',
+                '.hope-modal__overlay', '.hope-select__option', '.monaco-editor', 
+                'button:not(.hope-menu__trigger)', 'svg', 
+                // 忽略侧边栏
+                '.hope-c-PJLV-ijgzmFG-css', 
+                // 忽略自定义底部
+                '.dibu', '.nav-item', 
+                // 忽略顶部导航栏
+                '.header', '.hope-c-PJLV-ikaMhsQ-css', '.hope-breadcrumb'
+            ];
 
-        static getSelector(mainSelector) {
-          return `${mainSelector} :not(${Beautifier.ignoredSelectors.join(
-            "):not("
-          )})`;
-        }
-
-        static lightSelector = Beautifier.getSelector(".hope-ui-light");
-        static darkSelector = Beautifier.getSelector(".hope-ui-dark");
-        static lightBgColor = "rgba(255, 255, 255, 0.8)";
-        static darkBgColor = "rgb(32, 36, 37)";
-        static specificPrefix = "rgba(132, 133, 141,";
-
-        constructor() {
-          this.observer = null;
-        }
-
-        #rewriteStyle(theme) {
-          let selector =
-            theme === "light"
-              ? Beautifier.lightSelector
-              : Beautifier.darkSelector;
-          let bgColor =
-            theme === "light"
-              ? Beautifier.lightBgColor
-              : Beautifier.darkBgColor;
-          document.querySelectorAll(selector).forEach((element) => {
-            const computedStyle = getComputedStyle(element);
-            if (
-              computedStyle.backgroundColor !== "rgba(0, 0, 0, 0)" &&
-              !computedStyle.backgroundColor.startsWith(
-                Beautifier.specificPrefix
-              )
-            ) {
-              element.style.backgroundColor = bgColor;
-              element.setAttribute("data-beautified", "true");
+            static getSelector(mainSelector) {
+                return `${mainSelector} :not(${Beautifier.ignoredSelectors.join('):not(')})`;
             }
-          });
+
+            static lightSelector = Beautifier.getSelector('.hope-ui-light');
+            static darkSelector = Beautifier.getSelector('.hope-ui-dark');
+            static lightBgColor = 'rgba(255, 255, 255, 0.8)';
+            static darkBgColor = 'rgb(32, 36, 37)';
+            static specificPrefix = 'rgba(132, 133, 141,';
+
+            constructor() { this.observer = null; }
+
+            #rewriteStyle(theme) {
+                let selector = theme === 'light' ? Beautifier.lightSelector : Beautifier.darkSelector;
+                let bgColor = theme === 'light' ? Beautifier.lightBgColor : Beautifier.darkBgColor;
+                document.querySelectorAll(selector).forEach(element => {
+                    const computedStyle = getComputedStyle(element);
+                    if (computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+                        !computedStyle.backgroundColor.startsWith(Beautifier.specificPrefix)) {
+                        element.style.backgroundColor = bgColor;
+                        element.setAttribute('data-beautified', 'true');
+                    }
+                });
+            }
+
+            #beautify() {
+                if (!location.pathname.startsWith('/@manage')) {
+                    this.#rewriteStyle('light');
+                    this.#rewriteStyle('dark');
+                }
+            }
+
+            observe() {
+                this.observer = new MutationObserver(this.#beautify.bind(this));
+                this.observer.observe(document.body, { childList: true, subtree: true });
+                this.#beautify();
+            }
+            disconnect() { if (this.observer) this.observer.disconnect(); }
+            undo() {
+                this.disconnect();
+                document.body.querySelectorAll('[data-beautified]').forEach(element => {
+                    element.style.backgroundColor = '';
+                    element.removeAttribute('data-beautified');
+                });
+            }
+        }
+        const beautifier = new Beautifier();
+        window.beautifier = beautifier;
+        beautifier.observe();
+    </script>
+
+    <!-- ================================================================= -->
+    <!-- 逻辑脚本: 动态路由监听与底部隐藏逻辑 -->
+    <!-- ================================================================= -->
+    <script>
+        // 核心函数：处理路由变化 (隐藏底部 + 更新按钮)
+        function handleRouteUpdate() {
+            const path = location.pathname;
+            const footerContainer = document.getElementById('customize');
+            
+            // 1. 如果在管理页面 (/@manage)，隐藏底部；否则显示
+            if (footerContainer) {
+                if (path.startsWith('/@manage')) {
+                    footerContainer.style.display = 'none';
+                } else {
+                    footerContainer.style.display = ''; 
+                }
+            }
+
+            // 2. 每次路由变化都重新检查登录状态并渲染按钮
+            renderAuthButton();
         }
 
-        #beautify() {
-          if (!location.pathname.startsWith("/@manage")) {
-            this.#rewriteStyle("light");
-            this.#rewriteStyle("dark");
-          }
+        // SPA 无刷新跳转辅助函数
+        window.internalJump = function(path) {
+            history.pushState(null, '', path);
+            window.dispatchEvent(new PopStateEvent('popstate'));
         }
 
-        observe() {
-          this.observer = new MutationObserver(this.#beautify.bind(this));
-          this.observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-          });
-          this.#beautify();
+        // 监听 History API 变化
+        window.addEventListener('popstate', handleRouteUpdate);
+        
+        // 拦截 pushState 和 replaceState 以检测 React 路由跳转
+        const originalPush = history.pushState;
+        history.pushState = function() {
+            originalPush.apply(this, arguments);
+            handleRouteUpdate();
+        };
+        const originalReplace = history.replaceState;
+        history.replaceState = function() {
+            originalReplace.apply(this, arguments);
+            handleRouteUpdate();
+        };
+
+        // 渲染 登录/管理 按钮
+        function renderAuthButton() {
+            const container = document.getElementById('auth-btn-container');
+            if(!container) return;
+            
+            const token = localStorage.getItem('token');
+            if (token) {
+                // 已登录 -> 跳转管理页
+                container.innerHTML = `
+                    <a onclick="window.internalJump('/@manage'); return false;" style="cursor: pointer;">
+                        <i class="fa fa-cog"></i> 管理
+                    </a>
+                `;
+            } else {
+                // 未登录 -> 跳转登录页
+                container.innerHTML = `
+                    <a onclick="window.internalJump('/@login'); return false;" style="cursor: pointer;">
+                        <i class="fa fa-sign-in"></i> 登录
+                    </a>
+                `;
+            }
         }
-        disconnect() {
-          if (this.observer) this.observer.disconnect();
-        }
-        undo() {
-          this.disconnect();
-          document.body.querySelectorAll("[data-beautified]").forEach((element) => {
-            element.style.backgroundColor = "";
-            element.removeAttribute("data-beautified");
-          });
-        }
-      }
-      const beautifier = new Beautifier();
-      window.beautifier = beautifier;
-      beautifier.observe();
+
+        // 初始化检测
+        let interval = setInterval(() => {
+            if (document.querySelector(".footer")) {
+                const footerDiv = document.querySelector("#customize");
+                if (footerDiv) {
+                    footerDiv.style.display = ""; 
+                    handleRouteUpdate(); // 立即执行一次路由判断
+                    clearInterval(interval);
+                }
+            }
+        }, 200);
     </script>
 
     <script src="/src/main.tsx" type="module"></script>
