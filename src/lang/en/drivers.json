@@ -110,6 +110,13 @@
   },
   "139Yun": {
     "authorization": "Authorization",
+    "authorization-tips": "Authorization can be used alone. If empty, use mail_cookies alone for fast login, or mail_cookies + username + password for full login fallback.",
+    "client_type": "Client type",
+    "client_type-tips": "Client type reported to the personal cloud API. web (9) allows uploading files up to 50 GB; pc (13) raises the single file upload limit to 500 GB.",
+    "client_types": {
+      "pc": "Pc",
+      "web": "Web"
+    },
     "cloud_id": "Cloud id",
     "custom_upload_part_size": "Custom upload part size",
     "custom_upload_part_size-tips": "0 for auto",
@@ -118,9 +125,12 @@
     "mail_cookies": "Mail cookies",
     "mail_cookies-tips": "Cookies from mail.139.com used for login authentication.",
     "password": "Password",
+    "password-tips": "Required only when using password login fallback with mail_cookies.",
     "report_real_size": "Report real size",
     "report_real_size-tips": "Enable to report the real file size during upload",
     "root_folder_id": "Root folder id",
+    "sms_code": "Sms code",
+    "sms_code-tips": "Fill this only after OpenList reports that a 139 Mail SMS verification code was sent, then save the storage again.",
     "type": "Type",
     "types": {
       "family": "Family",
@@ -135,7 +145,8 @@
     "use_old_stream_upload-tips": "Enable to use old stream upload method (not support rapid upload)",
     "user_domain_id": "User domain id",
     "user_domain_id-tips": "ud_id in Cookie, fill in to show disk usage",
-    "username": "Username"
+    "username": "Username",
+    "username-tips": "Required only when using password login fallback with mail_cookies."
   },
   "189Cloud": {
     "cookie": "Cookie",
@@ -146,10 +157,16 @@
   },
   "189CloudPC": {
     "access_token": "Access token",
+    "client_sn": "Client sn",
+    "client_sn-tips": "Device serial number captured from the official client, leave it empty if you do not have one",
+    "device_id": "Device id",
+    "device_id-tips": "DEVICEID cookie issued after the second device verification, keep it to avoid verifying again",
     "family_id": "Family id",
     "family_transfer": "Family transfer",
     "generate_torrent": "Generate torrent",
     "generate_torrent-tips": "Generate torrent file with CAS extension after upload",
+    "jg_open_id": "Jg open id",
+    "jg_open_id-tips": "Optional push id reported by the official client",
     "login_type": "Login type",
     "login_types": {
       "password": "Password",
@@ -168,10 +185,13 @@
       "desc": "Desc"
     },
     "password": "Password",
+    "password-tips": "Not needed when an access token or refresh token is provided",
     "rapid_upload": "Rapid upload",
     "refresh_token": "Refresh token",
     "refresh_token-tips": "To switch accounts, please clear this field",
     "root_folder_id": "Root folder id",
+    "sms_code": "Sms code",
+    "sms_code-tips": "SMS code for the second device verification, fill it in and save again when login asks for it",
     "type": "Type",
     "types": {
       "family": "Family",
@@ -185,7 +205,10 @@
     },
     "upload_thread": "Upload thread",
     "upload_thread-tips": "1\u003c=thread\u003c=32",
+    "user_finger": "User finger",
+    "user_finger-tips": "Device fingerprint sent with login requests, generated and kept automatically when empty",
     "username": "Username",
+    "username-tips": "Not needed when an access token or refresh token is provided",
     "validate_code": "Validate code"
   },
   "189CloudTV": {
@@ -292,6 +315,8 @@
       "default": "Default"
     },
     "api_url_address": "Api url address",
+    "callback_concurrency": "Callback concurrency",
+    "callback_concurrency-tips": "Maximum active proxied downloads shared by Aliyun user",
     "client_id": "Client id",
     "client_id-tips": "Keep it empty if you don't have one",
     "client_secret": "Client secret",
@@ -673,6 +698,8 @@
     "username": "Username"
   },
   "GitHub API": {
+    "accurate_modified_time": "Accurate modified time",
+    "accurate_modified_time-tips": "Best-effort accurate modified time for small directory listings. Default disabled. Adds one GitHub GraphQL request and falls back to legacy zero-time values on failure.",
     "author_email": "Author email",
     "author_name": "Author name",
     "committer_email": "Committer email",
@@ -847,6 +874,8 @@
     "directory_size": "Directory size",
     "directory_size-tips": "This might impact host performance",
     "mkdir_perm": "Mkdir perm",
+    "pdf_thumbnail": "Pdf thumbnail",
+    "pdf_thumbnail-tips": "Generate PDF first-page thumbnails with Quick Look on macOS",
     "recycle_bin_path": "Recycle bin path",
     "recycle_bin_path-tips": "path to recycle bin, delete permanently if empty or keep 'delete permanently'",
     "root_folder_path": "Root folder path",
@@ -1021,6 +1050,8 @@
     },
     "refresh_token": "Refresh token",
     "root_folder_id": "Root folder id",
+    "skip_verification": "Skip verification",
+    "skip_verification-tips": "ignore the human verification URL returned by the captcha API instead of failing; enabling this may trigger PikPak risk control",
     "username": "Username"
   },
   "PikPakShare": {
@@ -1184,6 +1215,8 @@
     "encodePath-tips": "encode the path in the strm file",
     "filterFileTypes": "FilterFileTypes",
     "filterFileTypes-tips": "Supports suffix name of strm file",
+    "minFileSize": "MinFileSize",
+    "minFileSize-tips": "Filter out files smaller than this size (unit: MB, 0 to disable)",
     "paths": "Paths",
     "siteUrl": "SiteUrl",
     "siteUrl-tips": "The prefix URL of the strm file",
@@ -1506,9 +1539,11 @@
   },
   "WoPan": {
     "access_token": "Access token",
+    "access_token-tips": "Optional when a refresh token is provided; it is refreshed automatically when missing or too short",
     "family_id": "Family id",
     "family_id-tips": "Keep it empty if you want to use your personal drive",
     "refresh_token": "Refresh token",
+    "refresh_token-tips": "Provide a refresh token or an access token (at least 16 characters)",
     "root_folder_id": "Root folder id",
     "sort_rule": "Sort rule",
     "sort_rules": {

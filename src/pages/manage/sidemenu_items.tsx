@@ -22,8 +22,12 @@ import { OcWorkflow2 } from "solid-icons/oc"
 import { IoCopy, IoMove, IoHome, IoMagnetOutline } from "solid-icons/io"
 import { Component, lazy } from "solid-js"
 import { Group, UserRole } from "~/types"
-import { FaSolidBook, FaSolidDatabase } from "solid-icons/fa"
-import { TbArchive } from "solid-icons/tb"
+import {
+  FaSolidBook,
+  FaSolidDatabase,
+  FaSolidPuzzlePiece,
+} from "solid-icons/fa"
+import { TbArchive, TbSeeding } from "solid-icons/tb"
 
 export type SideMenuItem = SideMenuItemProps & {
   component?: Component
@@ -70,6 +74,12 @@ export const side_menu_items: SideMenuItem[] = [
         component: () => <CommonSettings group={Group.GLOBAL} />,
       },
       {
+        title: "manage.sidemenu.seed",
+        icon: TbSeeding,
+        to: "/@manage/settings/seed",
+        component: lazy(() => import("./settings/Seed")),
+      },
+      {
         title: "manage.sidemenu.sso",
         icon: FiLogIn,
         to: "/@manage/settings/sso",
@@ -85,6 +95,7 @@ export const side_menu_items: SideMenuItem[] = [
         title: "manage.sidemenu.s3",
         icon: BsBucket,
         to: "/@manage/settings/s3",
+        backend: ["go"],
         component: lazy(() => import("./settings/S3")),
       },
       {
@@ -100,6 +111,12 @@ export const side_menu_items: SideMenuItem[] = [
         component: () => <CommonSettings group={Group.TRAFFIC} />,
       },
       {
+        title: "manage.sidemenu.transcode",
+        icon: BsCameraFill,
+        to: "/@manage/settings/transcode",
+        component: () => <CommonSettings group={Group.TRANSCODE} />,
+      },
+      {
         title: "manage.sidemenu.other",
         icon: BsMedium,
         to: "/@manage/settings/other",
@@ -112,6 +129,7 @@ export const side_menu_items: SideMenuItem[] = [
     icon: OcWorkflow2,
     to: "/@manage/tasks",
     role: UserRole.GENERAL,
+    backend: ["go"],
     children: [
       {
         title: "manage.sidemenu.offline_download",
@@ -175,6 +193,13 @@ export const side_menu_items: SideMenuItem[] = [
     component: lazy(() => import("./storages/Storages")),
   },
   {
+    title: "manage.sidemenu.plugins",
+    icon: FaSolidPuzzlePiece,
+    to: "/@manage/plugins",
+    backend: ["ts-worker"],
+    component: lazy(() => import("./plugins")),
+  },
+  {
     title: "manage.sidemenu.shares",
     icon: CgShare,
     to: "/@manage/shares",
@@ -198,6 +223,77 @@ export const side_menu_items: SideMenuItem[] = [
     to: "/@manage/backup-restore",
     icon: FaSolidDatabase,
     component: lazy(() => import("./backup-restore")),
+  },
+  {
+    title: "manage.sidemenu.media",
+    icon: BsCameraFill,
+    to: "/@manage/media",
+    children: [
+      {
+        title: "manage.sidemenu.media_settings",
+        icon: BsGearFill,
+        to: "/@manage/media/settings",
+        component: lazy(() => import("./media/MediaSettingsPage")),
+      },
+      {
+        title: "manage.sidemenu.media_scrape",
+        icon: BsGearFill,
+        to: "/@manage/media/scrape",
+        component: lazy(() => import("./media/MediaScrapePage")),
+      },
+      {
+        title: "manage.sidemenu.media_strm",
+        icon: BsGearFill,
+        to: "/@manage/media/strm",
+        component: lazy(() => import("./media/MediaStrmPage")),
+      },
+      {
+        title: "manage.sidemenu.media_transcode",
+        icon: BsGearFill,
+        to: "/@manage/media/transcode",
+        component: () => <CommonSettings group={Group.TRANSCODE} />,
+      },
+      {
+        title: "manage.sidemenu.media_video",
+        icon: BsCameraFill,
+        to: "/@manage/media/video",
+        component: lazy(() =>
+          import("./media/MediaManage").then((m) => ({
+            default: m.VideoManage,
+          })),
+        ),
+      },
+      {
+        title: "manage.sidemenu.media_music",
+        icon: BsCameraFill,
+        to: "/@manage/media/music",
+        component: lazy(() =>
+          import("./media/MediaManage").then((m) => ({
+            default: m.MusicManage,
+          })),
+        ),
+      },
+      {
+        title: "manage.sidemenu.media_image",
+        icon: BsCameraFill,
+        to: "/@manage/media/image",
+        component: lazy(() =>
+          import("./media/MediaManage").then((m) => ({
+            default: m.ImageManage,
+          })),
+        ),
+      },
+      {
+        title: "manage.sidemenu.media_book",
+        icon: BsCameraFill,
+        to: "/@manage/media/book",
+        component: lazy(() =>
+          import("./media/MediaManage").then((m) => ({
+            default: m.BookManage,
+          })),
+        ),
+      },
+    ],
   },
   {
     title: "manage.sidemenu.about",

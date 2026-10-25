@@ -24,7 +24,7 @@ main() {
     parse_args "$@"
     set_defaults
     check_git_version_and_commit
-    update_package_version
+    set_build_version
     if [[ "$LITE_FLAG" == "true" ]]; then
         archive_name="openlist-frontend-dist-lite-${version_tag}"
     else
@@ -104,7 +104,7 @@ enforce_git_tag() {
 
 # Validate git tag against package.json version
 validate_git_tag() {
-    package_version=$(grep '"version":' package.json | sed 's/.*"version": *"\([^"]*\)".*/\1/')
+    package_version=$(node -p 'require("./package.json").version')
     git_version_clean=${git_version#v}
     if [[ "$git_version_clean" != "$package_version" ]]; then
         log_error "Package.json version (${package_version}) does not match git tag (${git_version_clean})."
@@ -114,22 +114,23 @@ validate_git_tag() {
 
 # Fallback to default git tag for development builds
 fallback_git_tag() {
-    git tag -d rolling >/dev/null 2>&1 || true
-    git_version=$(git describe --abbrev=0 --tags 2>/dev/null || echo "v0.0.0")
+    if ! git_version=$(git describe --abbrev=0 --tags --match 'v[0-9]*.[0-9]*.[0-9]*' 2>/dev/null); then
+        git_version_clean=$(node -p 'require("./package.json").version')
+        return
+    fi
+
     git_version_clean=${git_version#v}
-    git_version_clean=${git_version_clean%%-*}
+    if [[ "$git_version_clean" =~ ^([0-9]+\.[0-9]+\.[0-9]+)([-+][0-9A-Za-z.-]+)?$ ]]; then
+        git_version_clean=${BASH_REMATCH[1]}
+    else
+        git_version_clean=$(node -p 'require("./package.json").version')
+    fi
 }
 
-# Update package.json version
-update_package_version() {
+# Set the version for the build
+set_build_version() {
     if [[ "$BUILD_TYPE" == "dev" ]]; then
-        # Handle both BSD and GNU sed syntax
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i "" "s/\"version\": *\"[^\"]*\"/\"version\": \"${git_version_clean}\"/" package.json
-        else
-            sed -i "s/\"version\": *\"[^\"]*\"/\"version\": \"${git_version_clean}\"/" package.json
-        fi
-        log_success "Package.json version updated to ${git_version_clean}"
+        log_info "Using ${git_version_clean} as the development build version"
         version_tag="v${git_version_clean}-${commit}"
         log_build "Building DEV version ${version_tag}..."
     elif [[ "$BUILD_TYPE" == "release" ]]; then
@@ -148,10 +149,17 @@ build_project() {
 
     log_step "==== Building i18n ===="
     if [[ "$SKIP_I18N" == "false" ]]; then
-        pnpm i18n:release
+        if ! pnpm i18n:release; then
+            log_warning "Crowdin download failed, falling back to the edge beta release"
+            fetch_i18n_from_release "edge" || true
+        fi
     else
-        fetch_i18n_from_release
+        fetch_i18n_from_release "edge" || true
     fi
+
+    # Always generate entry.ts and fill missing translation files for all languages
+    log_info "Running i18n build script to generate entry.ts..."
+    node ./scripts/i18n.mjs
 
     log_step "==== Building project ===="
     if [[ "$LITE_FLAG" == "true" ]]; then
@@ -163,32 +171,36 @@ build_project() {
 
 # Fetch i18n files from release if skip-i18n flag is set
 fetch_i18n_from_release() {
-    log_warning "Skipping i18n build step, try to fetch from GitHub release"
-    release_response=$(curl -s "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/tags/$git_version")
-    if echo -n "$release_response" | grep -q "Not Found"; then
-        log_warning "Failed to fetch release info. Skipping i18n fetch."
-    else
-        extract_i18n_tarball "$release_response"
-    fi
+    local release_tag=${1:-edge}
+
+    log_warning "Trying to fetch i18n files from GitHub release: $release_tag"
+    release_response=$(curl -fsSL "https://api.github.com/repos/OpenListTeam/OpenList-Frontend/releases/tags/$release_tag") || {
+        log_warning "Failed to fetch release info for $release_tag."
+        return 1
+    }
+    extract_i18n_tarball "$release_response"
 }
 
 # Extract i18n tarball
 extract_i18n_tarball() {
     i18n_file_url=$(echo "$1" | grep -oP '"browser_download_url":\s*"\K[^"]*' | grep "i18n.tar.gz") || true
     if [[ -z "$i18n_file_url" ]]; then
-        log_warning "i18n.tar.gz not found in release assets. Skipping i18n fetch."
+        log_warning "i18n.tar.gz not found in release assets."
+        return 1
     else
         log_info "Downloading i18n.tar.gz from GitHub..."
-        if curl -L -o "i18n.tar.gz" "$i18n_file_url"; then
-            if tar -xzvf i18n.tar.gz -C src/lang; then
+        if curl -fL -o "i18n.tar.gz" "$i18n_file_url"; then
+            if tar -xzf i18n.tar.gz -C src/lang; then
                 log_info "i18n files extracted to src/lang/"
+                return 0
             else
-                log_warning "Failed to extract i18n.tar.gz"
+                log_warning "Failed to extract i18n.tar.gz."
             fi
         else
-            log_warning "Failed to download i18n.tar.gz"
+            log_warning "Failed to download i18n.tar.gz."
         fi
     fi
+    return 1
 }
 
 # Create VERSION file in the dist directory
